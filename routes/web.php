@@ -14,9 +14,9 @@ use App\Models\User;
 |
 */
 
-Route::get('/login', function () {
+Route::get('/', function () {
 
-    return view('usuarios.login');
+    return view('welcome');
 });
 
 Route::resource('users','UserController');
