@@ -18,27 +18,20 @@ class User extends Authenticatable
      * @var string[]
      */
     protected $fillable = [
-        'name',
-        'email',
+        'nombre',
+        'apellido_paterno',
+        'apellido_materno',
+        'correo',
+        'imagen',
+        'rol',
+        'activo',
         'password',
-        'user_type'
     ];
+    public $timestamps = false;
+    public function nombreCompleto(){
+        return $this->nombre." ".$this->apellido_paterno." ".$this->apellido_materno;
+    }
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'remember_token',
-    ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'email_verified_at' => 'datetime',
-    ];
+
 }

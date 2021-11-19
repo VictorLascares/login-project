@@ -12,6 +12,18 @@
 </head>
 <body>
 <div class="container">
+    @auth
+        <div class="encabezado">
+            {{Auth::user()->nombre}} - ({{Auth::user()->rol}})
+            <a href="/salir">SALIR</a>
+        </div>
+    @endauth
+    @guest
+        <div class="encabezado">
+            <a href="/login">INICIAR SESIÓN</a>
+            <a href="/register">REGISTRARSE</a>
+        </div>
+    @endguest
     @yield('content')
 </div>
 

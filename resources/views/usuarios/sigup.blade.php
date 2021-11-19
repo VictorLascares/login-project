@@ -22,39 +22,83 @@
 				<h3>Sign Up</h3>
 			</div>
 			<div class="card-body">
-				<form action="{{route('users.store')}}" method="POST">
+				<form action="{{route('users.store')}}" method="POST" enctype="multipart/form-data">
                     @csrf
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="text" class="form-control" placeholder="username" id="name" name="name">
+						<input type="text" class="form-control" placeholder="username" id="nombre" name="nombre">
 
 					</div>
                     <div class="input-group form-group">
 						<div class="input-group-prepend">
-							<span class="input-group-text"><i class="fas fa-think fa-users"></i></span>
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<select name="user_type" class="form-control">
-							<option selected disabled>Select type of user</option>
-							<option value="admin">admin</option> 
-							<option value="encargado">encargado</option>      
-							<option value="cliente">cliente</option>       
-					  </select>
+						<input type="text" class="form-control" placeholder="apellido paterno" id="apellido_paterno" name="apellido_paterno">
+
 					</div>
+                    <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="text" class="form-control" placeholder="apellido materno" id="apellido_materno" name="apellido_materno">
+
+					</div>
+                    <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-user"></i></span>
+						</div>
+						<input type="file" class="form-control" id="imagen" name="imagen">
+					</div>
+                    @auth
+                        @if (Auth::user()->rol == 'Supervisor')
+                            <div class="input-group form-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text"><i class="fas fa-think fa-users"></i></span>
+                                </div>
+                                <select name="rol" id="rol" class="form-control">
+                                    <option selected disabled>Select type of user</option>
+                                    <option value="Supervisor">Supervisor</option>
+                                    <option value="Encargado">Encargado</option>
+                                    <option value="Contador">Contador</option>
+                                    <option value="Cliente">Cliente</option>
+                                </select>
+                            </div>
+                        @endif
+                        @if (Auth::user()->rol == 'Encargado')
+                        <div class="input-group form-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text"><i class="fas fa-think fa-users"></i></span>
+                            </div>
+                            <select name="rol" id="rol" class="form-control">
+                                <option selected disabled>Select type of user</option>
+                                <option value="Encargado">Encargado</option>
+                                <option value="Contador">Contador</option>
+                                <option value="Cliente">Cliente</option>
+                            </select>
+                        </div>
+                        @endif
+                    @endauth
 
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-solid fa-envelope"></i></span>
 						</div>
-						<input type="email" class="form-control" placeholder="Email" id="name" name="email">
+						<input type="text" class="form-control" placeholder="correo" id="correo" name="correo">
 
 					</div>
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="password" id="password" name="password">
+						<input type="password" class="form-control" placeholder="contraseña" id="password" name="password">
+					</div>
+                    <div class="input-group form-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text"><i class="fas fa-key"></i></span>
+						</div>
+						<input type="password" class="form-control" placeholder="repetir contraseña" id="password2" name="password2">
 					</div>
 
 					<div class="form-group">
