@@ -1,6 +1,8 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+// use App\Http\Controllers\CategoryController;
+// use App\Http\Controllers\ProductController;
 use App\Models\User;
 
 /*
@@ -14,8 +16,8 @@ use App\Models\User;
 |
 */
 
-Route::get('/', function () {
 
+Route::get('/', function(){
     return view('iniciar');
 });
 Route::get('iniciar',['App\Http\Controllers\SessionController','iniciar']);
@@ -31,27 +33,7 @@ Route::get('register', function(){
 
 Route::resource('users','UserController');
 
-// Route::post('/login', function(){
-//     $name = request()->get('name');
-//     $user = User::where('name',$name)->get();
-//     if($user){
-//         if($user[0]->password == request()->get('password')){
-//             if($user[0]->user_type == 'cliente'){
-//                 return view('usuarios.cliente');
-//             }elseif($user[0]->user_type == 'admin'){
-//                 return view('usuarios.admin');
-//             }else{
-//                 return view('usuarios.encargado');
-//             }
-//         }else{
-//             return view('usuarios.login');
-//         }
-//     }else{
-//         return view('usuarios.login');
-//     }
-// });
 
-/*Route::get('/admin', function () {
-    return view('admin');
-});*/
+Route::resource('categories', CategoryController::class);
+Route::resource('products', ProductController::class);
 
