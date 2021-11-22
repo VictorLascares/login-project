@@ -22,6 +22,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Name</th>
                                 <th scope="col">Active</th>
+                                <th scope="col">Products</th>
                                 <th scope="col">Actions</th>
                             </tr>
                         </thead>
@@ -35,6 +36,9 @@
                                 @else
                                     <td class="text-danger">No</td>
                                 @endif
+                                <td>
+                                    <a href="#">Show products</a>
+                                </td>
                                 <td class="d-flex justify-content-center">
                                     <form method="POST" action="{{route('categories.destroy',$category->id)}}">
                                         <a href="{{route('categories.show',$category->id)}}" class="btn btn-success">
@@ -62,7 +66,7 @@
                             @endforeach
                         </tbody>
                     </table>
-                </div>       
+                </div>
             </div>
         </div>
     </div>

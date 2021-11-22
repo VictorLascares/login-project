@@ -33,6 +33,7 @@ Route::get('register', function(){
 
 Route::resource('users','UserController');
 
+Route::get('/product/{id}/consignar',['App\Http\Controllers\ProductController','consignar']);
 
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);

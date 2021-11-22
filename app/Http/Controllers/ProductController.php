@@ -6,6 +6,8 @@ use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
+use App\Events\ProductConcesionado;
 
 class ProductController extends Controller
 {
@@ -16,9 +18,27 @@ class ProductController extends Controller
      */
     public function index()
     {
+        switch (Auth::user()->rol) {
+            case 'Cliente':
+                # PROPIOS
+                $products = Product::all();//Auth::user()->productos;
+                break;
+            case 'Encargado':
+                # propuestos
+                $products = Product::all();//Productos::propuestos()->get();
+                break;
+            case 'Supervisor':
+                # todos
+                $products = Product::all();
+                break;
+            case 'Contador':
+                # code...
+                $products = [];
+                break;
+        }
         //
-        $products = Product::paginate();
-        $i = 0;
+        //$products = Product::paginate();
+        $i = 1;
         $categories = Category::all();
         return view('product.index', compact('products', 'i', 'categories'));
     }
@@ -73,7 +93,8 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
-        $categories = Category::all();
+        //$this->authorize('update',$seleccionado);
+        $categories = Category::all();//where('activa',1)->get();
         return view('product.edit', compact('product', 'categories'));
     }
 
@@ -106,5 +127,18 @@ class ProductController extends Controller
         //
         $product=Product::find($id)->delete();
         return redirect()->route('products.index');
+    }
+
+    public function consignar($id){
+
+        $seleccionado = Product::find($id);
+        $this->authorize('consignar',$seleccionado);
+
+        $seleccionado->consignado=true;
+
+        $seleccionado->save();
+        event(new ProductConcesionado($seleccionado));
+
+        return redirect('product');
     }
 }

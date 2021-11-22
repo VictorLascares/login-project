@@ -18,7 +18,7 @@ class CategoryController extends Controller
     {
         //
         $categories = Category::paginate();
-        $i = 0;
+        $i = 1;
         return view('category.index', compact('categories', 'i'));
     }
 
@@ -56,7 +56,7 @@ class CategoryController extends Controller
      */
     public function show($id)
     {
-        // 
+        //
         $category = Category::find($id);
         return view('category.show', compact(('category')));
     }
