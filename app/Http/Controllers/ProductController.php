@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\Question;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -45,7 +46,7 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         //
-        $product = Product::create($request->all());
+        Product::create($request->all());
         return redirect()->route('products.index');
     }
 
@@ -60,7 +61,8 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
         $category = Category::where('id',$product->category_id)->first();
-        return view('product.show', compact('product', 'category'));
+        $questions = Question::where('product_id',$id)->paginate(10);
+        return view('product.show', compact('product', 'category', 'questions'));
     }
 
     /**
