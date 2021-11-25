@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use App\Events\ProductConcesionado;
+use App\Observers\ProductObserver;
 
 class ProductController extends Controller
 {
@@ -18,29 +20,80 @@ class ProductController extends Controller
      */
     public function index()
     {
-        switch (Auth::user()->rol) {
-            case 'Cliente':
-                # PROPIOS
-                $products = Product::all();//Auth::user()->productos;
-                break;
-            case 'Encargado':
-                # propuestos
-                $products = Product::all();//Productos::propuestos()->get();
-                break;
-            case 'Supervisor':
-                # todos
-                $products = Product::all();
-                break;
-            case 'Contador':
-                # code...
-                $products = [];
-                break;
+        if(Auth::user() != null){
+            switch (Auth::user()->rol) {
+                case 'Cliente':
+                    # PROPIOS
+                    $user = 'Cliente';
+                    $products = Product::aceptados()->get();//Auth::user()->productos;
+                    break;
+                case 'Encargado':
+                    # propuestos
+                    $user = 'Encargado';
+                    $products = Product::propuestos()->get();//Productos::propuestos()->get();
+                    break;
+                case 'Supervisor':
+                    # todos
+                    $user = 'Supervisor';
+                    $products = Product::aceptados()->get();
+                    break;
+                case 'Contador':
+                    # code...
+                    $user = 'Contador';
+                    $products = [];
+                    break;
+            }
+        }else{
+            $user = 'Anonimo';
+            $products = Product::aceptados()->get();
         }
         //
         //$products = Product::paginate();
         $i = 1;
+
         $categories = Category::all();
-        return view('product.index', compact('products', 'i', 'categories'));
+        return view('product.index', compact('products', 'i', 'categories','user'));
+    }
+
+    public function indexCategory(Request $request,$id_category)
+    {
+        if(Auth::user() != null){
+            switch (Auth::user()->rol) {
+                case 'Cliente':
+                    # PROPIOS
+                    $user = 'Cliente';
+                    $products = Product::aceptados()->category($id_category)->get();//Auth::user()->productos;
+                    break;
+                case 'Encargado':
+                    # propuestos
+                    $user = 'Encargado';
+                    $products = Product::propuestos()->category($id_category)->get();//Productos::propuestos()->get();
+                    break;
+                case 'Supervisor':
+                    # todos
+                    $user = 'Supervisor';
+                    $products = Product::aceptados()->category($id_category)->get();
+                    break;
+                case 'Contador':
+                    # code...
+                    $user = 'Contador';
+                    $products = [];
+                    break;
+            }
+        }else{
+            $user = 'Anonimo';
+            if($request->input('name') != ''){
+                $products = Product::aceptados()->name($request->input('name'))->get();
+            }else{
+                $products = Product::aceptados()->get();
+            }
+        }
+        //
+        //$products = Product::paginate();
+        $i = 1;
+
+        $categories = Category::all();
+        return view('product.index', compact('products', 'i', 'categories','user'));
     }
 
     /**
@@ -64,9 +117,20 @@ class ProductController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        $product = Product::create($request->all());
-        return redirect()->route('products.index');
+        $product = $request->all();
+        $imagen = $request->file('imagen');
+        if(!is_null($imagen)){
+            $ruta_destino = public_path('fotos/products/');
+            $nombre_de_archivo = $imagen->getClientOriginalName();
+            $imagen->move($ruta_destino,$nombre_de_archivo);
+            $product['imagen']= $nombre_de_archivo;
+        }
+        $product['user_id'] = Auth::user()->id;
+        $registro = new Product();
+        $registro->fill($product);
+        $registro->save();
+
+        return redirect('products');
     }
 
     /**
@@ -126,6 +190,7 @@ class ProductController extends Controller
     {
         //
         $product=Product::find($id)->delete();
+        new ProductObserver.deleted($product);
         return redirect()->route('products.index');
     }
 
@@ -134,11 +199,11 @@ class ProductController extends Controller
         $seleccionado = Product::find($id);
         $this->authorize('consignar',$seleccionado);
 
-        $seleccionado->consignado=true;
+        $seleccionado->concesionado=true;
 
         $seleccionado->save();
         event(new ProductConcesionado($seleccionado));
 
-        return redirect('product');
+        return redirect('products');
     }
 }

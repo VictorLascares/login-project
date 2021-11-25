@@ -37,4 +37,6 @@ Route::get('/product/{id}/consignar',['App\Http\Controllers\ProductController','
 
 Route::resource('categories', CategoryController::class);
 Route::resource('products', ProductController::class);
+Route::get('/product/{category_id}',['App\Http\Controllers\ProductController','indexCategory']);
+Route::post('/product/{null}',['App\Http\Controllers\ProductController','indexCategory']);
 

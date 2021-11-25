@@ -37,7 +37,8 @@
                                     <td class="text-danger">No</td>
                                 @endif
                                 <td>
-                                    <a href="#">Show products</a>
+                                    @csrf
+                                    <a href="/product/{{$category->id}}">Show products</a>
                                 </td>
                                 <td class="d-flex justify-content-center">
                                     <form method="POST" action="{{route('categories.destroy',$category->id)}}">

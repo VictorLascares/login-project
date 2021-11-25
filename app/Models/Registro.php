@@ -8,6 +8,6 @@ use Illuminate\Database\Eloquent\Model;
 class Registro extends Model
 {
     use HasFactory;
-    protected $fillable=['quien','cuando','accion','que'];
-    public $timestamps = false;
+    const CREATE_AT = 'cuando';
+    protected $fillable=['quien','accion','que','product_id'];
 }

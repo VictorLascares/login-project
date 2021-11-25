@@ -16,12 +16,14 @@ class ProductObserver
      */
     public function created(Product $product)
     {
-        Registro::create[
+        Registro::create(
             [
             'quien' => Auth::user()->nombre,
             'accion' => 'Agregar un producto',
+            'que' => $product->name."-".$product->descripcion,
+            'product_id' => $product->id
             ]
-        ];
+        );
     }
 
     /**
@@ -32,12 +34,16 @@ class ProductObserver
      */
     public function updated(Product $product)
     {
-        Registro::create[
+
+        Registro::create(
             [
             'quien' => Auth::user()->nombre,
             'accion' => 'Modifico un producto',
+            'que' => $product->name."-".$product->descripcion,
+            'product_id' => $product->id
             ]
-        ];
+
+        );
     }
 
     /**
@@ -48,12 +54,15 @@ class ProductObserver
      */
     public function deleted(Product $product)
     {
-        Registro::create[
+        Registro::create(
             [
             'quien' => Auth::user()->nombre,
             'accion' => 'Borró un producto',
+            'que' => $product->name."-".$product->descripcion,
+            'product_id' => $product->id
             ]
-        ];
+
+        );
     }
 
     /**

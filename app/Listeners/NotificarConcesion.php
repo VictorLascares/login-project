@@ -2,7 +2,7 @@
 
 namespace App\Listeners;
 
-use App\Events\ProductConsesionado;
+use App\Events\ProductConcesionado;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Queue\InteractsWithQueue;
 
@@ -24,7 +24,7 @@ class NotificarConcesion
      * @param  ProductConsesionado  $event
      * @return void
      */
-    public function handle(ProductConsesionado $event)
+    public function handle(ProductConcesionado $event)
     {
         //Enviar un correo al cliente para avisarle que su producto ya esta concesionado
     }

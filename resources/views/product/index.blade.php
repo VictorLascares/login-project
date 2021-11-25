@@ -2,19 +2,34 @@
 @section('content')
 
 <div class="input-group form-group">
-    <i class="fas fa-think fa-users"></i>
-    <select  class="select-category" name="categoria" id="categoria" class="form-control">
-        <option selected disabled>Select type of category</option>
-        @foreach ($categories as $category)
-            <option value="{{$category->name}}">{{$category->name}}</option>
-        @endforeach
-    </select>
-    <input type="text" placeholder="Product name" id="nombre" name="nombre">
-    <button type="submit" class="btn btn-danger">
-        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-        </svg>
-    </button>
+    @auth
+        <form action="" >
+            <i class="fas fa-think fa-users"></i>
+            <select  class="select-category" name="categoria" id="categoria" class="form-control">
+                <option selected disabled>Select type of category</option>
+                @foreach ($categories as $category)
+                    <option value="{{$category->name}}">{{$category->name}}</option>
+                @endforeach
+            </select>
+            <input type="text" placeholder="Product name" id="nombre" name="nombre">
+            <button type="submit" class="bi bi-search">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </form>
+    @endauth
+    @guest
+        <form method="POST" action="/product/{null}">
+            @csrf
+            <input type="text" placeholder="Product name" id="name" name="name">
+            <button type="submit" class="bi bi-search" >
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                </svg>
+            </button>
+        </form>
+    @endguest
 </div>
 
 <div class="row pt-4">
@@ -25,10 +40,12 @@
                     <h2 class="card-title text-center">
                         Manage Products
                     </h2>
-                    <form>
-                        @csrf
-                        <a href="{{ route('products.create')}}" class="btn btn-primary">New Product<a/>
-                    </form>
+                    @if ($user == 'Cliente')
+                        <form>
+                            @csrf
+                            <a href="{{ route('products.create')}}" class="btn btn-primary">New Product<a/>
+                        </form>
+                    @endif
                 </div>
             </div>
             <div class="card-body">
@@ -75,14 +92,16 @@
                                             <a href="/product/{{$product->id}}/consignar" class="btn btn-danger">CONCESIONAR
                                             </a>
                                         @endcan
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="btn btn-danger">
-                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                                            </svg>
-                                        </button>
 
+                                        @auth
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="btn btn-danger">
+                                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                                </svg>
+                                            </button>
+                                        @endauth
                                     </form>
                                 </td>
                             </tr>

@@ -17,9 +17,16 @@ class CreateProductsTable extends Migration
             $table->engine='InnoDB';
             $table->id();
             $table->string('name');
+            $table->string('descripcion');
             $table->decimal('price', 10, 2);
+            $table->string('imagen',30)->nullable()->default(null);
+            $table->integer('concesionado')->nullable()->default(null);
+            $table->string('motivo',100)->nullable()->default(null);
+            $table->integer('existencia')->nullable()->default('1');
+            $table->integer('pendiente')->nullable()->default('0');
             $table->foreignId('category_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
-            $table->timestamps();   
+            $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->timestamps();
         });
     }
 

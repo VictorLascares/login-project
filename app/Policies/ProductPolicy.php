@@ -37,9 +37,10 @@ class ProductPolicy
      * Determine whether the user can create models.
      *
      * @param  \App\Models\User  $user
+     * @param  \App\Models\Product  $product
      * @return \Illuminate\Auth\Access\Response|bool
      */
-    public function create(User $user)
+    public function create(User $user, Product $product)
     {
         return $user->rol == 'Cliente';
     }
@@ -92,7 +93,12 @@ class ProductPolicy
         //
     }
 
-    public function consignar(User $user){
+    public function consignar(User $user, Product $product){
         return $user->rol == 'Encargado';
     }
+
+    public function agregar($user){
+        return $user == 'Cliente';
+    }
+
 }

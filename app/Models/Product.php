@@ -9,7 +9,10 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['name', 'price', 'category_id'];
+    protected $fillable = ['name', 'descripcion', 'price', 'imagen', 'user_id', 'category_id','consesionado','motivo','existencia','pendientes'];
+
+
+
 
     public function scopePropuestos($query){
         return $query->whereNull('concesionado');
@@ -19,5 +22,14 @@ class Product extends Model
     }
     public function scopeRechazados($query){
         return $query->where('concesionado',0);
+    }
+
+
+    public function scopeCategory($query,$category_id){
+        return $query->where('category_id',$category_id);
+    }
+
+    public function scopeName($query,$name){
+        return $query->where('name',$name);
     }
 }
