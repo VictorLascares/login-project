@@ -3,11 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Category;
-use App\Models\Product;
-use Symfony\Component\VarDumper\VarDumper;
+use App\Models\Question;
 
-class CategoryController extends Controller
+class QuestionController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,9 +15,6 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::paginate();
-        $i = 1;
-        return view('category.index', compact('categories', 'i'));
     }
 
     /**
@@ -29,10 +24,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        // Create new category
-        // $category = new Category();
-        // echo('hola');
-        return view('category.create');
+        //
     }
 
     /**
@@ -44,8 +36,8 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
         //
-        Category::create($request->all());
-        return redirect()->route('categories.index');
+        Question::create($request->all());
+        return redirect()->route('products.show',$request->product_id);
     }
 
     /**
@@ -57,8 +49,6 @@ class CategoryController extends Controller
     public function show($id)
     {
         //
-        $category = Category::find($id);
-        return view('category.show', compact(('category')));
     }
 
     /**
@@ -70,8 +60,6 @@ class CategoryController extends Controller
     public function edit($id)
     {
         //
-        $category = Category::find($id);
-        return view('category.edit', compact(('category')));
     }
 
     /**
@@ -84,11 +72,10 @@ class CategoryController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $category=Category::find($id);
-        $category->name = $request->input('name');
-        $category->active = $request->input('active',0);
-        $category->save();
-        return redirect()->route('categories.index');
+        $question=Question::find($id);
+        $question->answer = $request->input('answer');
+        $question->save();
+        return redirect()->route('products.index');
     }
 
     /**
@@ -100,7 +87,5 @@ class CategoryController extends Controller
     public function destroy($id)
     {
         //
-        $category=Category::find($id)->delete();
-        return redirect()->route('categories.index');
     }
 }

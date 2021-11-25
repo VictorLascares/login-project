@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Product;
+<<<<<<< HEAD
 use App\Models\User;
+=======
+use App\Models\Question;
+>>>>>>> Victor
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -144,7 +148,8 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
         $category = Category::where('id',$product->category_id)->first();
-        return view('product.show', compact('product', 'category'));
+        $questions = Question::where('product_id',$id)->paginate(10);
+        return view('product.show', compact('product', 'category', 'questions'));
     }
 
     /**
