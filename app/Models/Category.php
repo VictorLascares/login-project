@@ -16,7 +16,7 @@ class Category extends Model
     ];
 
     protected $fillable = ['name', 'active'];
-    
+
     protected $casts = [
         'active' => 'boolean',
     ];
@@ -24,5 +24,9 @@ class Category extends Model
 
     public function products(){
         return $this->hasMany('App\Models\Product', 'category_id', 'id');
+    }
+
+    public function scopeAceptados($query){
+        return $query->where('active',1);
     }
 }

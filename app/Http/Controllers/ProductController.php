@@ -88,7 +88,11 @@ class ProductController extends Controller
             if($request->input('name') != ''){
                 $products = Product::aceptados()->name($request->input('name'))->get();
             }else{
-                $products = Product::aceptados()->get();
+                if($id_category == '{null}'){
+                    $products = Product::aceptados()->get();
+                }else{
+                    $products = Product::aceptados()->category($id_category)->get();
+                }
             }
         }
         //
@@ -108,7 +112,7 @@ class ProductController extends Controller
     {
         //
         $product = new Product();
-        $categories = Category::all();
+        $categories = Category::aceptados()->get();
         return view('product.create', compact('product','categories'));
     }
 
@@ -162,7 +166,7 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
         //$this->authorize('update',$seleccionado);
-        $categories = Category::all();//where('activa',1)->get();
+        $categories = Category::aceptados()->get();//where('activa',1)->get();
         return view('product.edit', compact('product', 'categories'));
     }
 
