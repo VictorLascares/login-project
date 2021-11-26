@@ -3,12 +3,12 @@
 
 <div class="input-group form-group">
     @auth
-        <form action="" >
+        <form id="formulario_busqueda" action="/product/{null}" >
             <i class="fas fa-think fa-users"></i>
-            <select  class="select-category" name="categoria" id="categoria" class="form-control">
-                <option selected disabled>Select type of category</option>
+            <select  class="select-category" name="categoria" class="form-control">
+                <option selected>All Categories</option>
                 @foreach ($categories as $category)
-                    <option value="{{$category->name}}">{{$category->name}}</option>
+                    <option class="categoria" id="{{$category->id}}" value="{{$category->name}}">{{$category->name}}</option>
                 @endforeach
             </select>
             <input type="text" placeholder="Product name" id="nombre" name="nombre">
@@ -20,8 +20,8 @@
         </form>
     @endauth
     @guest
-        <form method="POST" action="/product/{null}">
-            @csrf
+    <form method="POST" action="/product/{null}">
+        @csrf
             <input type="text" placeholder="Product name" id="name" name="name">
             <button type="submit" class="bi bi-search" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
@@ -113,4 +113,14 @@
         </div>
     </div>
 </div>
+<script type="text/javascript" >
+    const categories = document.querySelectorAll('.categoria');
+    const form = document.querySelector('#formulario_busqueda')
+    console.log(form);
+    categories.forEach( category => {
+        category.addEventListener('click',(e) => {
+            form.action = "/product/".concat(e.target.id)
+        })
+    });
+</script>
 @endsection

@@ -61,21 +61,27 @@ class ProductController extends Controller
     public function indexCategory(Request $request,$id_category)
     {
         if(Auth::user() != null){
+            if($request->input('name') != ''){
+                $products = Product::aceptados()->name($request->input('name'))->get();
+            }else{
+                if ($request->input('categoria') == 'All Categories') {
+                    $products = Product::aceptados()->get();
+                } else {
+                    $products = Product::aceptados()->category($id_category)->get();
+                }
+            }
             switch (Auth::user()->rol) {
                 case 'Cliente':
                     # PROPIOS
                     $user = 'Cliente';
-                    $products = Product::aceptados()->category($id_category)->get();//Auth::user()->productos;
                     break;
                 case 'Encargado':
                     # propuestos
                     $user = 'Encargado';
-                    $products = Product::propuestos()->category($id_category)->get();//Productos::propuestos()->get();
                     break;
                 case 'Supervisor':
                     # todos
                     $user = 'Supervisor';
-                    $products = Product::aceptados()->category($id_category)->get();
                     break;
                 case 'Contador':
                     # code...
@@ -88,7 +94,11 @@ class ProductController extends Controller
             if($request->input('name') != ''){
                 $products = Product::aceptados()->name($request->input('name'))->get();
             }else{
-                $products = Product::aceptados()->get();
+                if($id_category == '{null}'){
+                    $products = Product::aceptados()->get();
+                }else{
+                    $products = Product::aceptados()->category($id_category)->get();
+                }
             }
         }
         //
@@ -194,7 +204,6 @@ class ProductController extends Controller
     {
         //
         $product=Product::find($id)->delete();
-        new ProductObserver.deleted($product);
         return redirect()->route('products.index');
     }
 
