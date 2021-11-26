@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
 use Symfony\Component\VarDumper\VarDumper;
+use Illuminate\Support\Facades\Auth;
 
 class CategoryController extends Controller
 {
@@ -17,9 +18,36 @@ class CategoryController extends Controller
     public function index()
     {
         //
-        $categories = Category::paginate();
+        if(Auth::user() != null){
+            switch (Auth::user()->rol) {
+                case 'Cliente':
+                    # PROPIOS
+                    $user = 'Cliente';
+                    $categories = Category::aceptados()->get();//Auth::user()->productos;
+                    break;
+                case 'Encargado':
+                    # propuestos
+                    $user = 'Encargado';
+                    $categories = Category::aceptados()->get();//Productos::propuestos()->get();
+                    break;
+                case 'Supervisor':
+                    # todos
+                    $user = 'Supervisor';
+                    $categories = Category::all();
+                    break;
+                case 'Contador':
+                    # code...
+                    $user = 'Contador';
+                    $categories = [];
+                    break;
+            }
+        }else{
+            $user = 'Anonimo';
+            $categories = Category::aceptados()->get();
+        }
+
         $i = 1;
-        return view('category.index', compact('categories', 'i'));
+        return view('category.index', compact('categories', 'i','user'));
     }
 
     /**

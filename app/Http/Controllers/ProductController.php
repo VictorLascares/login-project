@@ -118,7 +118,7 @@ class ProductController extends Controller
     {
         //
         $product = new Product();
-        $categories = Category::all();
+        $categories = Category::aceptados()->get();
         return view('product.create', compact('product','categories'));
     }
 
@@ -172,7 +172,7 @@ class ProductController extends Controller
         //
         $product = Product::find($id);
         //$this->authorize('update',$seleccionado);
-        $categories = Category::all();//where('activa',1)->get();
+        $categories = Category::aceptados()->get();//where('activa',1)->get();
         return view('product.edit', compact('product', 'categories'));
     }
 

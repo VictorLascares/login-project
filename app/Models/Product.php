@@ -32,4 +32,5 @@ class Product extends Model
     public function scopeName($query,$name){
         return $query->where('name',$name);
     }
+
 }
