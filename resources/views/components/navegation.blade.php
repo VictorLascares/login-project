@@ -14,6 +14,7 @@
                         <div class="nav-item">
                             {{Auth::user()->nombre}} - ({{Auth::user()->rol}})
                         </div>
+                        <img src="{{ asset("fotos/".Auth::user()->imagen) }}" style="max-width: 45px" class="rounded-circle" alt="Imagen de Usuario">
                     </div>
                 @endauth
                 @guest

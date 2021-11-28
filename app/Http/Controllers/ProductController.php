@@ -57,37 +57,49 @@ class ProductController extends Controller
         $categories = Category::all();
         return view('product.index', compact('products', 'i', 'categories','user'));
     }
-
+    
     public function indexCategory(Request $request,$id_category)
     {
         if(Auth::user() != null){
             if($request->input('name') != ''){
-                $products = Product::aceptados()->name($request->input('name'))->get();
-            }else{
-                if ($request->input('categoria') == 'All Categories') {
-                    $products = Product::aceptados()->get();
+                if(Auth::user()->rol == 'Encargado') {
+                    $products = Product::propuestos()->name($request->input('name'))->get();
                 } else {
-                    $products = Product::aceptados()->category($id_category)->get();
+                    $products = Product::aceptados()->name($request->input('name'))->get();
                 }
-            }
-            switch (Auth::user()->rol) {
-                case 'Cliente':
-                    # PROPIOS
-                    $user = 'Cliente';
-                    break;
-                case 'Encargado':
-                    # propuestos
-                    $user = 'Encargado';
-                    break;
-                case 'Supervisor':
-                    # todos
-                    $user = 'Supervisor';
-                    break;
-                case 'Contador':
-                    # code...
-                    $user = 'Contador';
-                    $products = [];
-                    break;
+                $user = Auth::user()->rol;
+            } else {
+                if ($request->input('categoria') == 'All Categories') {
+                    if(Auth::user()->rol == 'Encargado') {
+                        $products = Product::propuestos()->get();
+                    } else {
+                        $products = Product::aceptados()->get();
+                    }
+                    $user = Auth::user()->rol;
+                } else {
+                    switch (Auth::user()->rol) {
+                        case 'Cliente':
+                            # PROPIOS
+                            $user = 'Cliente';
+                            $products = Product::aceptados()->category($id_category)->get();
+                            break;
+                        case 'Encargado':
+                            # propuestos
+                            $user = 'Encargado';
+                            $products = Product::propuestos()->category($id_category)->get();
+                            break;
+                        case 'Supervisor':
+                            # todos
+                            $user = 'Supervisor';
+                            $products = Product::aceptados()->category($id_category)->get();
+                            break;
+                        case 'Contador':
+                            # code...
+                            $user = 'Contador';
+                            $products = [];
+                            break;
+                    }
+                }
             }
         }else{
             $user = 'Anonimo';

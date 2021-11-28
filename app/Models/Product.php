@@ -23,12 +23,9 @@ class Product extends Model
     public function scopeRechazados($query){
         return $query->where('concesionado',0);
     }
-
-
     public function scopeCategory($query,$category_id){
         return $query->where('category_id',$category_id);
     }
-
     public function scopeName($query,$name){
         return $query->where('name',$name);
     }
