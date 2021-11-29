@@ -19,6 +19,7 @@ class CreateProductsTable extends Migration
             $table->string('name');
             $table->string('descripcion');
             $table->decimal('price', 10, 2);
+            $table->integer('porcentaje')->default(0);
             $table->string('imagen',30)->nullable()->default(null);
             $table->integer('concesionado')->nullable()->default(null);
             $table->string('motivo',100)->nullable()->default(null);

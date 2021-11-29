@@ -17,7 +17,11 @@
                             <label for="floatingInput">Product Descripcion</label>
                         </div>
                         <div class="form-floating mb-3">
-                            <input required type="number" class="form-control" id="floatingInput" placeholder="Product Price" name="price">
+                            <input required type="number" class="form-control" id="floatingInput" placeholder="Existence" name="existencia">
+                            <label for="floatingInput">Existence</label>
+                        </div>
+                        <div class="form-floating mb-3">
+                            <input required type="number" class="form-control" id="floatingInput" placeholder="" name="price">
                             <label for="floatingInput">Product Price</label>
                         </div>
                         <div class="input-group form-group mb-3">

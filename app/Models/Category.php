@@ -29,4 +29,8 @@ class Category extends Model
     public function scopeAceptados($query){
         return $query->where('active',1);
     }
+
+    public function scopeCategory($query,$category){
+        return $query->where('name',$category);
+    }
 }

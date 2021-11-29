@@ -92,6 +92,14 @@ class UserController extends Controller
 
     }
 
+    public function updateEstado(Request $request, $id, $estado)
+    {
+        $user=User::find($id);
+        $user->estado = $estado;
+        $user->save();
+        return redirect()->route('products.index');
+    }
+
     /**
      * Remove the specified resource from storage.
      *

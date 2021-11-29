@@ -28,7 +28,11 @@ class ProductController extends Controller
                 case 'Cliente':
                     # PROPIOS
                     $user = 'Cliente';
-                    $products = Product::aceptados()->get();//Auth::user()->productos;
+                    if(Auth::user()->estado == 'Comprador'){
+                        $products = Product::aceptados()->get();//Concesionados;
+                    }else{
+                        $products = Product::propios(Auth::user()->id)->get();//Propiod;
+                    }
                     break;
                 case 'Encargado':
                     # propuestos
@@ -38,7 +42,7 @@ class ProductController extends Controller
                 case 'Supervisor':
                     # todos
                     $user = 'Supervisor';
-                    $products = Product::aceptados()->get();
+                    $products = Product::all();
                     break;
                 case 'Contador':
                     # code...
@@ -57,7 +61,7 @@ class ProductController extends Controller
         $categories = Category::all();
         return view('product.index', compact('products', 'i', 'categories','user'));
     }
-    
+
     public function indexCategory(Request $request,$id_category)
     {
         if(Auth::user() != null){
@@ -65,7 +69,11 @@ class ProductController extends Controller
                 if(Auth::user()->rol == 'Encargado') {
                     $products = Product::propuestos()->name($request->input('name'))->get();
                 } else {
-                    $products = Product::aceptados()->name($request->input('name'))->get();
+                    if(Auth::user()->estado == 'Comprador'){
+                        $products = Product::aceptados()->name($request->input('name'))->get();//Concesionados;
+                    }else{
+                        $products = Product::propios(Auth::user()->id)->name($request->input('name'))->get();//Propiod;
+                    }
                 }
                 $user = Auth::user()->rol;
             } else {
@@ -73,7 +81,11 @@ class ProductController extends Controller
                     if(Auth::user()->rol == 'Encargado') {
                         $products = Product::propuestos()->get();
                     } else {
-                        $products = Product::aceptados()->get();
+                        if(Auth::user()->estado == 'Comprador'){
+                            $products = Product::aceptados()->get();//Concesionados;
+                        }else{
+                            $products = Product::propios(Auth::user()->id)->get();//Propiod;
+                        }
                     }
                     $user = Auth::user()->rol;
                 } else {
@@ -81,17 +93,33 @@ class ProductController extends Controller
                         case 'Cliente':
                             # PROPIOS
                             $user = 'Cliente';
-                            $products = Product::aceptados()->category($id_category)->get();
+                            $category = Category::category($request->input('categoria'))->first();
+                            if($category != null){
+                                $id_category = $category->id;
+                            }
+                            if(Auth::user()->estado == 'Comprador'){
+                                $products = Product::aceptados()->category($id_category)->get();//Concesionados;
+                            }else{
+                                $products = Product::propios(Auth::user()->id)->category($id_category)->get();//Propiod;
+                            }
                             break;
                         case 'Encargado':
                             # propuestos
                             $user = 'Encargado';
+                            $category = Category::category($request->input('categoria'))->first();
+                            if($category != null){
+                                $id_category = $category->id;
+                            }
                             $products = Product::propuestos()->category($id_category)->get();
                             break;
                         case 'Supervisor':
                             # todos
                             $user = 'Supervisor';
-                            $products = Product::aceptados()->category($id_category)->get();
+                            $category = Category::category($request->input('categoria'))->first();
+                            if($category != null){
+                                $id_category = $category->id;
+                            }
+                            $products = Product::rechazados()->aceptados()->category($id_category)->get();
                             break;
                         case 'Contador':
                             # code...
