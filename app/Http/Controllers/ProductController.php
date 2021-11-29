@@ -182,7 +182,7 @@ class ProductController extends Controller
         $imagen = $request->file('imagen');
         if(!is_null($imagen)){
             $ruta_destino = public_path('fotos/products/');
-            $nombre_de_archivo = $imagen->getClientOriginalName();
+            $nombre_de_archivo = time().'.'.$imagen->getClientOriginalExtension();
             $imagen->move($ruta_destino,$nombre_de_archivo);
             $product['imagen']= $nombre_de_archivo;
         }
@@ -233,12 +233,24 @@ class ProductController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
         $product=Product::find($id);
-        $product->name = $request->input('name');
-        $product->price = $request->input('price');
-        $product->category_id = $request->input('category_id');
+        $imagen = $request->file('imagen');
+        $nombre_imagen = $product->imagen;
+        if(!is_null($imagen)){
+            unlink(public_path('fotos/products/'.$nombre_imagen));
+            $ruta_destino = public_path('fotos/products/');
+            $nombre_de_archivo = time().'.'.$imagen->getClientOriginalExtension();
+            $imagen->move($ruta_destino,$nombre_de_archivo);
+            $product['imagen']= $nombre_de_archivo;
+        }
+        $product->name = $request->name;
+        $product->descripcion = $request->descripcion;
+        $product->existencia = $request->existencia;
+        $product->price = $request->price;
+        $product->category_id = $request->category_id;
         $product->save();
+
         return redirect()->route('products.index');
     }
 
@@ -251,7 +263,10 @@ class ProductController extends Controller
     public function destroy($id)
     {
         //
-        $product=Product::find($id)->delete();
+        $product=Product::find($id);
+        $path = $product->imagen;
+        unlink(public_path('fotos/products/'.$path));
+        Product::destroy($id);
         return redirect()->route('products.index');
     }
 

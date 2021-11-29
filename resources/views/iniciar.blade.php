@@ -3,14 +3,25 @@
 
     @auth
         @if (Auth::user()->rol =='Cliente')
-            <form method="POST" action="/estado/{{Auth::user()->id}}/Comprador">
-                @csrf
-                <button type="submit">Comprar</button>
-            </form>
-            <form method="POST" action="/estado/{{Auth::user()->id}}/Vendedor">
-                @csrf
-                <button type="submit">Vender</button>
-            </form>
+            <a href="/estado/{{Auth::user()->id}}/Comprador" method="POST">
+                <button type="button" class="btn btn-primary">Comprar</button>
+            </a>
+            <a href="/estado/{{Auth::user()->id}}/Vendedor" method="POST">
+                <button type="button" class="btn btn-primary">Vender</button>
+            </a>
+
+        @endif
+
+        @if (Auth::user()->rol =='Encargado')
+            <a href="/users">
+                <button type="button" class="btn btn-primary">Usuarios</button>
+            </a>
+            <a href="/products">
+                <button type="button" class="btn btn-primary">Productos</button>
+            </a>
+            <a href="/categories">
+                <button type="button" class="btn btn-primary">Categorias</button>
+            </a>
 
         @endif
 
@@ -194,7 +205,7 @@
 					<button type="button" class="btn btn-primary">Productos</button>
 				</a>
                 <a href="/categories">
-					<button type="button" class="btn btn-primary">Categoria</button>
+					<button type="button" class="btn btn-primary">Categorias</button>
 				</a>
 			@endif
 @endauth

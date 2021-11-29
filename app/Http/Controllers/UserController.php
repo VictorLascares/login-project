@@ -48,7 +48,7 @@ class UserController extends Controller
         $imagen = $request->file('imagen');
         if(!is_null($imagen)){
             $ruta_destino = public_path('fotos/');
-            $nombre_de_archivo = $imagen->getClientOriginalName();
+            $nombre_de_archivo = time().'.'.$imagen->getClientOriginalExtension();
             $imagen->move($ruta_destino,$nombre_de_archivo);
             $user['imagen']= $nombre_de_archivo;
         }
@@ -74,7 +74,7 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return $user;
+        return view('usuarios.show', compact('user'));
     }
 
     /**
@@ -91,7 +91,7 @@ class UserController extends Controller
     }
     public function editpass($id)
     {
-        $user = User::find($id)->first();
+        $user = User::find($id);
         return view('usuarios.resetPassword', compact('user'));
     }
 
@@ -117,7 +117,7 @@ class UserController extends Controller
         $imagen = $request->file('imagen');
         if(!is_null($imagen)){
             $ruta_destino = public_path('fotos/');
-            $nombre_de_archivo = $imagen->getClientOriginalName();
+            $nombre_de_archivo = time().'.'.$imagen->getClientOriginalExtension();
             $imagen->move($ruta_destino,$nombre_de_archivo);
             $user['imagen']= $nombre_de_archivo;
         }
@@ -147,7 +147,10 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $user=User::find($id)->delete();
+        $user=User::find($id);
+        $path = $user->imagen;
+        unlink(public_path('fotos/'.$path));
+        User::destroy($id);
         return redirect('users');
     }
 
