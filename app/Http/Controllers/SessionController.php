@@ -11,7 +11,13 @@ use Illuminate\Http\Request;
 class SessionController extends Controller
 {
     public function iniciar(){
-        return view('iniciar');
+        $contador = 0;
+        $usuarios = User::all();
+
+        foreach($usuarios as $usuario){
+            $contador += 1;
+        }
+        return view('iniciar',compact('contador'));    
     }
 
     public function salir(){
