@@ -61,9 +61,13 @@
                                 <th scope="col">Name</th>
                                 <th scope="col">Price</th>
                                 <th scope="col">Category</th>
-                                @if (Auth::user()->estado != 'Vendedor')
-                                    <th scope="col">Vendedor</th>
-                                @endif
+                                @auth
+                                    @if (Auth::user()->estado != 'Vendedor')
+                                        <th scope="col">Vendedor</th>
+                                    @else
+                                        <th scope="col">Motivo</th>
+                                    @endif
+                                @endauth
                                 <th scope="col">Status</th>
                                 <th scope="col">Actions</th>
                             </tr>
@@ -83,42 +87,61 @@
                                     </td>
                                 @endif
                                 @endforeach
-                                @if (Auth::user()->estado != 'Vendedor')
-                                    <td>{{Auth::user()->nombre($product->user_id)}}</td>
-                                @endif
-                                @if (Auth::user()->rol == "Cliente")
-                                    @if (Auth::user()->estado == "Comprador")
-                                        @if ($product->existencia >= '1')
-                                            <td>Activo</td>
-                                        @else
-                                            <td>Pausado</td>
-                                        @endif
+
+                                @auth
+                                    @if ($product->concesionado == '0')
+                                        <td>{{$Product->motivo}}</td>
                                     @else
                                         @if ($product->concesionado == '1')
-                                            <td>Aceptado</td>
+                                            <td>Valido para venta</td>
                                         @else
-                                            @if ($product->concesionado == '0')
-                                                <td>Rechazado</td>
-                                            @else
-                                                <td>Pendiente</td>
-                                            @endif
+                                            <td>---</td>
                                         @endif
                                     @endif
-                                @else
-                                    @if (Auth::user()->rol == "Encargado")
-                                        <td>Pendiente</td>
-                                    @else
-                                        @if ($product->concesionado == '1')
-                                            <td>Aceptado</td>
+                                    @if (Auth::user()->estado != 'Vendedor')
+                                        <td>{{Auth::user()->nombre($product->user_id)}}</td>
+                                    @endif
+                                    @if (Auth::user()->rol == "Cliente")
+                                        @if (Auth::user()->estado == "Comprador")
+                                            @if ($product->existencia >= '1')
+                                                <td>Activo</td>
+                                            @else
+                                                <td>Pausado</td>
+                                            @endif
+                                        @else
+                                            @if ($product->concesionado == '1')
+                                                <td>Aceptado</td>
                                             @else
                                                 @if ($product->concesionado == '0')
                                                     <td>Rechazado</td>
                                                 @else
                                                     <td>Pendiente</td>
+                                                @endif
+                                            @endif
+                                        @endif
+                                    @else
+                                        @if (Auth::user()->rol == "Encargado")
+                                            <td>Pendiente</td>
+                                        @else
+                                            @if ($product->concesionado == '1')
+                                                <td>Aceptado</td>
+                                                @else
+                                                    @if ($product->concesionado == '0')
+                                                        <td>Rechazado</td>
+                                                    @else
+                                                        <td>Pendiente</td>
+                                                @endif
                                             @endif
                                         @endif
                                     @endif
-                                @endif
+                                @endauth
+                                @guest
+                                    @if ($product->existencia >= '1')
+                                        <td>Activo</td>
+                                    @else
+                                        <td>Pausado</td>
+                                    @endif
+                                @endguest
                                 <td class="d-flex justify-content-center">
                                     <form method="POST" action="{{route('products.destroy',$product->id)}}">
                                         <a href="{{route('products.show',$product->id)}}" class="btn btn-success">
@@ -148,13 +171,25 @@
                                         @auth
                                             @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Comprador')
                                             @else
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="submit" class="btn btn-danger">
-                                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
-                                                        <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
-                                                    </svg>
-                                                </button>
+                                                @if (Auth::user()->rol == 'Cliente')
+                                                    @if ($product->concesionado != '1')
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit" class="btn btn-danger">
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                                <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                                            </svg>
+                                                        </button>
+                                                    @endif
+                                                @else
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="btn btn-danger">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                                            <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                                        </svg>
+                                                    </button>
+                                                @endif
                                             @endif
                                         @endauth
                                     </form>
