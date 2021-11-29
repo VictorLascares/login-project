@@ -1,20 +1,38 @@
 @extends('layouts.app')
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Login Page</title>
-   <!--Made with love by Mutiullah Samim -->
-
-	<!--Bootsrap 4 CDN-->
-	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
-
-    <!--Fontawesome CDN-->
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-
-	<!--Custom styles-->
-	<link rel="stylesheet" href="../../css/app.css">
-</head>
-<body>
-
-</body>
-</html>
+@section('content')
+		@auth
+		@if(Auth::user()->rol == 'Supervisor')
+		<div class="row">
+			<div class="col-xl-6 col-md-5 col-sm-4">
+			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+			<div class="card-header"><h3>Usuarios registrados</h1></div>
+			<div class="card-body">
+		  		<h5 class="card-title">{{$contador}}  </h5>  
+			</div>
+			</div>
+			</div>
+			<div class="">
+			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+			<div class="card-header"><h3>Transacciones</h1></div>
+			<div class="card-body">
+				<h5 class="card-title">Primary card title</h5>
+			
+			</div>
+			</div>
+			</div>
+			<div class="">
+			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+			<div class="card-header"><h3>Propuestas</h1></div>
+			<div class="card-body">
+				<h5 class="card-title">Primary card title</h5>
+					 
+			</div>
+			</div>
+			</div>
+			</div>
+				<a href="/users">
+					<button type="button" class="btn btn-primary">Usuarios</button>
+				</a>
+			@endif
+@endauth
+@endsection
