@@ -163,11 +163,6 @@
                                             @endif
                                         @endcan
 
-                                        @can('consignar', $product)
-                                            <a href="/product/{{$product->id}}/consignar" class="btn btn-danger">CONCESIONAR
-                                            </a>
-                                        @endcan
-
                                         @auth
                                             @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Comprador')
                                             @else

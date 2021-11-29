@@ -13,6 +13,7 @@
                 </div>
             </div>
 
+
             <div class="card-body">
                 <div class="form-group">
                     <strong>Name:</strong>
@@ -45,6 +46,14 @@
                                 <input class="btn btn-primary" type="submit" value="Send">
                             </div>
                         </form>
+                        @can('consignar', $product)
+                            <button id="consignar"  class="btn btn-success">CONCESIONAR</button>
+                            <button id="noConsignar" class="btn btn-danger">NO CONCESIONAR</button>
+                            <form id="#overlay" class="row-reverse" method="POST" action="/product/{{$product->id}}/consignar">
+                                @method('PUT')
+                                @csrf
+                            </form>
+                        @endcan
                     @endif
                 @endauth
             </div>
@@ -86,6 +95,46 @@
     </div>
 </div>
 <script type="text/javascript" >
+    const consignar = document.querySelector('#consignar')
+    const noConsignar = document.querySelector('#noConsignar')
+    const overlay = document.getElementById('#overlay');
+    const entrada = document.createElement("INPUT");
+    const submit = document.createElement("INPUT");
+    submit.type = 'submit'
+    submit.classList.add = 'btn'
+    submit.classList.add = 'btn-primary'
+    submit.value = 'Agregar';
+    overlay.appendChild(submit);
+    overlay.style.display = "none";
+    consignar.addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarInputNumber();
+    })
 
+    noConsignar.addEventListener('click', function(e) {
+        e.preventDefault();
+        mostrarInputText();
+    })
+    function mostrarInputNumber(){
+        noConsignar.disabled = false;
+        consignar.disabled = true;
+        entrada.type = "number";
+        entrada.name = "porcentaje";
+        entrada.placeholder = "Porcentaje";
+        overlay.appendChild(entrada);
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "row-reverse"
+    }
+    function mostrarInputText(){
+        consignar.disabled = false;
+        noConsignar.disabled = true;
+        entrada.type = "text";
+        entrada.name = "motivo";
+        overlay.appendChild(entrada);
+        entrada.placeholder = "Motivo";
+        overlay.appendChild(entrada);
+        overlay.style.display = "flex";
+        overlay.style.flexDirection = "row-reverse"
+    }
 </script>
 @endsection
