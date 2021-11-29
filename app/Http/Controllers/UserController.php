@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
+use App\Observers\UserObserver;
 
 class UserController extends Controller
 {
@@ -15,8 +16,10 @@ class UserController extends Controller
      */
     public function index()
     {
-        $todos = User::all();
-        return view('User.index',compact('todos'));
+        $users = User::all();
+        $user = User::all();
+        $i = 1;
+        return view('usuarios.index',compact('users','user','i'));
     }
 
     /**
@@ -64,8 +67,8 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $seleccionado = Usuario::find($id);
-        return view('usuarios.show', compact('seleccionado'));
+        $user = User::find($id);
+        return $user;
     }
 
     /**
@@ -76,8 +79,15 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $seleccionado = User::find($id);
-        return view('usuarios.edit',compact('seleccionado'));
+        $user = User::find($id);
+        $users = User::find($id);
+        return view('usuarios.editUser',compact('user','users'));
+    }
+    public function editpass($id)
+    {
+        $user = User::find($id);
+        $users = User::find($id);
+        return view('usuarios.resetPassword',compact('user','users'));
     }
 
     /**
@@ -88,8 +98,43 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {
+    {   
 
+        if($request->only(['password','password2'])){
+            if($request['password']!=$request['password2'])
+            return redirect()->back()->with('error',"El password no esta bien confirmado");
+            $user = User::find($id);
+            $user['password']=Hash::make($request->input('password'));
+             $user->save();
+             return redirect('users');
+        }
+
+
+
+        $user=User::find($id);
+        $user->nombre = $request->input('nombre');
+        $user->apellido_paterno = $request->input('p_apellido');
+        $user->apellido_materno = $request->input('s_apellido');
+        $user->correo = $request->input('email');
+        $imagen = $request->file('imagen');
+        if(!is_null($imagen)){
+            $ruta_destino = public_path('fotos/');
+            $nombre_de_archivo = $imagen->getClientOriginalName();
+            $imagen->move($ruta_destino,$nombre_de_archivo);
+            $user['imagen']= $nombre_de_archivo;
+        }
+        $user->save();
+        return redirect('users');
+
+           
+    }
+
+    public function updateEstado(Request $request, $id, $estado)
+    {
+        $user=User::find($id);
+        $user->estado = $estado;
+        $user->save();
+        return redirect()->route('products.index');
     }
 
     /**
@@ -100,6 +145,9 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user=User::find($id)->delete();
+        return redirect('users');
     }
+
+    
 }

@@ -22,6 +22,7 @@ class CreateUsersTable extends Migration
             $table->string('correo',45);
             $table->string('imagen',30)->nullable()->default(null);
             $table->enum('rol',['Supervisor','Encargado','Contador','Cliente'])->default('Cliente');
+            $table->enum('estado',['Comprador','Vendedor'])->default('Comprador');
             $table->tinyInteger('activo')->default('0');
             $table->string('password',100);
             $table->unique(["correo"],'correo_UNIQUE');

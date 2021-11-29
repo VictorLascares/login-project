@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Support\Facades\DB;
 
 class User extends Authenticatable
 {
@@ -32,6 +33,10 @@ class User extends Authenticatable
         return $this->nombre." ".$this->apellido_paterno." ".$this->apellido_materno;
     }
 
+    public function nombre($user_id){
+        $user = DB::table('users')->where('id', $user_id)->first();
+        return $user->nombre;
+    }
 
 
 }

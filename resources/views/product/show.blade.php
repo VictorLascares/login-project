@@ -13,10 +13,15 @@
                 </div>
             </div>
 
-            <div class="card-body info-product"> 
+
+            <div class="card-body">
                 <div class="form-group">
                     <strong>Name:</strong>
                     {{ $product->name }}
+                </div>
+                <div class="form-group">
+                    <strong>Existence:</strong>
+                    {{ $product->existencia }}
                 </div>
                 <div class="form-group">
                     <strong>Price:</strong>
@@ -25,31 +30,32 @@
                 <div class="form-group">
                     <strong>Category:</strong>
                     {{ $category['name'] }}
-                </div> 
-
-                <form action="{{ route('questions.store') }}" method="POST">
-                    @csrf
-                    <div class="d-flex flex-column">
-                        <label for="product_question">Do you have a question?</label>
-                        <input type="text" name="question" id="product_question" placeholder="Question">
-                    </div>
-                    <div class="d-none">
-                        <input type="text" name="product_id" value="{{ $product->id }}" id="product_question" placeholder="Question">
-                    </div>
-                    <div class="d-flex justify-content-end mt-2">
-                        <input class="btn btn-primary" type="submit" value="Send">
-                    </div>
-                </form>
-                @can('consignar', $product)
-                    <button id="consignar"  class="btn btn-success">CONCESIONAR
-                    </button>
-                    <button id="noConsignar" class="btn btn-danger">NO CONCESIONAR
-                    </button>
-                    <form id="#overlay" class="row-reverse" method="POST" action="/product/{{$product->id}}/consignar">
-                        @method('PUT')
-                        @csrf
-                    </form>
-                @endcan
+                </div>
+                @auth
+                    @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Comprador')
+                        <form action="{{ route('questions.store') }}" method="POST">
+                            @csrf
+                            <div class="d-flex flex-column">
+                                <label for="product_question">Do you have a question?</label>
+                                <input type="text" name="question" id="product_question" placeholder="Question">
+                            </div>
+                            <div class="d-none">
+                                <input type="text" name="product_id" value="{{ $product->id }}" id="product_question" placeholder="Question">
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <input class="btn btn-primary" type="submit" value="Send">
+                            </div>
+                        </form>
+                        @can('consignar', $product)
+                            <button id="consignar"  class="btn btn-success">CONCESIONAR</button>
+                            <button id="noConsignar" class="btn btn-danger">NO CONCESIONAR</button>
+                            <form id="#overlay" class="row-reverse" method="POST" action="/product/{{$product->id}}/consignar">
+                                @method('PUT')
+                                @csrf
+                            </form>
+                        @endcan
+                    @endif
+                @endauth
             </div>
         </div>
 
@@ -60,18 +66,23 @@
             <div class="card-body">
                 @foreach ($questions as $question)
                     @if ($question->answer == '')
-                    <form method="POST" action="{{ route('questions.update',$question->id)}}">
-                        @method('PUT')
-                        @csrf
-                        <div class="d-flex flex-column">
-                            <label>{{ $question->question }}</label>
-                            <input type="text" name="answer" placeholder="Responder">
-                        </div>
-                    
-                        <div class="d-flex justify-content-end mt-2">
-                            <input class="btn btn-primary btn-answer" type="submit" value="Send">
-                        </div>
-                    </form>
+                    <p>{{ $question->question }}</p>
+                    @auth
+                        @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Vendedor')
+                            <form method="POST" action="{{ route('questions.update',$question->id)}}">
+                                @method('PUT')
+                                @csrf
+                                <div class="d-flex flex-column">
+
+                                    <input type="text" name="answer" placeholder="Responder">
+                                </div>
+
+                                <div class="d-flex justify-content-end mt-2">
+                                    <input class="btn btn-primary btn-answer" type="submit" value="Send">
+                                </div>
+                            </form>
+                        @endif
+                    @endauth
                     @else
                     <div class="d-flex flex-column">
                         <label for="{{$question->id}}">{{ $question->question }}</label>
