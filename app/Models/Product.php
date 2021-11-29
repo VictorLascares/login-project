@@ -23,8 +23,8 @@ class Product extends Model
     public function scopePropios($query,$user){
         return $query->where('user_id',$user);
     }
-    public function scopeRechazados($query){
-        return $query->where('concesionado',0);
+    public function scopeAceptadosrechazados($query){
+        return $query->whereNotNull('concesionado');
     }
     public function scopeCategory($query,$category_id){
         return $query->where('category_id',$category_id);

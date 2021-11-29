@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Hash;
 use App\Observers\UserObserver;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -56,7 +57,12 @@ class UserController extends Controller
         $registro->fill($user);
         $registro->save();
 
-        return redirect('/login');
+        if(Auth::user() != null){
+            return redirect('/iniciar');
+        }else{
+            return redirect('/login');
+        }
+
     }
 
     /**
@@ -79,15 +85,14 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find($id);
+        $user = User::find($id)->first();
         $users = User::find($id);
         return view('usuarios.editUser',compact('user','users'));
     }
     public function editpass($id)
     {
-        $user = User::find($id);
-        $users = User::find($id);
-        return view('usuarios.resetPassword',compact('user','users'));
+        $user = User::find($id)->first();
+        return view('usuarios.resetPassword', compact('user'));
     }
 
     /**
@@ -98,24 +103,17 @@ class UserController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
-    {   
-
+    {
         if($request->only(['password','password2'])){
             if($request['password']!=$request['password2'])
             return redirect()->back()->with('error',"El password no esta bien confirmado");
             $user = User::find($id);
             $user['password']=Hash::make($request->input('password'));
              $user->save();
-             return redirect('users');
+            return redirect('users');
         }
 
-
-
-        $user=User::find($id);
-        $user->nombre = $request->input('nombre');
-        $user->apellido_paterno = $request->input('p_apellido');
-        $user->apellido_materno = $request->input('s_apellido');
-        $user->correo = $request->input('email');
+        $user = User::find($id);
         $imagen = $request->file('imagen');
         if(!is_null($imagen)){
             $ruta_destino = public_path('fotos/');
@@ -123,10 +121,14 @@ class UserController extends Controller
             $imagen->move($ruta_destino,$nombre_de_archivo);
             $user['imagen']= $nombre_de_archivo;
         }
+        $user->nombre = $request->nombre;
+        $user->apellido_paterno = $request->apellido_paterno;
+        $user->apellido_materno = $request->apellido_materno;
+        $user->correo = $request->correo;
         $user->save();
+
         return redirect('users');
 
-           
     }
 
     public function updateEstado(Request $request, $id, $estado)
@@ -149,5 +151,5 @@ class UserController extends Controller
         return redirect('users');
     }
 
-    
+
 }

@@ -33,7 +33,7 @@
 								<div class="input-group form-group">
 									<input type="file" class="form-control" id="imagen" name="imagen">
 								</div>
-							</div>	
+							</div>
 							@auth
 								@if (Auth::user()->rol == 'Supervisor')
 								<div class="d-flex flex-row align-items-center mb-2">
@@ -60,11 +60,11 @@
 									</div>
 								</div>
 								@endif
-							@endauth	
-							<div class="d-flex flex-row align-items-center mb-2">				
+							@endauth
+							<div class="d-flex flex-row align-items-center mb-2">
 								<div class="form-floating flex-fill">
 									<input type="text" class="form-control" placeholder="Correo Eléctronico" id="correo" name="correo">
-									<label class="form-label" for="correo">Correo Eléctronico</label>	
+									<label class="form-label" for="correo">Correo Eléctronico</label>
 								</div>
 							</div>
 							<div class="d-flex flex-row align-items-center mb-2">

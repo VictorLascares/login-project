@@ -32,7 +32,8 @@ Route::get('register', function(){
     return view('usuarios.sigup');
 });
 
-Route::resource('users','UserController');
+Route::resource('users',UserController::class);
+Route::get('/user/editpass/{user_id}',['App\Http\Controllers\UserController','editpass']);
 
 Route::put('/product/{id}/consignar',['App\Http\Controllers\ProductController','consignar']);
 
@@ -42,6 +43,7 @@ Route::resource('products', ProductController::class);
 Route::get('/product/{category_id}',['App\Http\Controllers\ProductController','indexCategory']);
 Route::post('/product/{null}',['App\Http\Controllers\ProductController','indexCategory']);
 Route::post('/estado/{id}/{estado}',['App\Http\Controllers\UserController','updateEstado']);
+
 Route::resource('questions', QuestionController::class);
 
 //Route::post('questions/addAnswer',['App\Http\Controllers\QuestionController','update']);

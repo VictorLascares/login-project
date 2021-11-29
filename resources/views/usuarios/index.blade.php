@@ -17,7 +17,7 @@
                             @csrf
                             <a href="{{ route('users.create')}}" class="btn btn-primary">New User<a/>
                         </form>
-                    
+
                 </div>
             </div>
             <div class="card-body">
@@ -31,6 +31,7 @@
                                 <th scope="col">A. Paterno</th>
                                 <th scope="col">A. Materno</th>
                                 <th scope="col">Correo</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -43,13 +44,13 @@
                                 <td>{{ $user->apellido_materno }}</td>
                                 <td>{{ $user->correo }}</td>
                                 <td class="d-flex justify-content-center">
-
-                                    <a href="{{ url('users/editpass', $user->id) }}" class="btn btn-primary">
+                                    @csrf
+                                    <a href="{{ url('/user/editpass',$user->id) }}" class="btn btn-primary">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill m-9" viewBox="0 0 16 16">
                                             <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                           </svg>
-                                    </a>  
-                                    
+                                    </a>
+
 
                                     <form method="POST" action="{{route('users.destroy',$user->id)}}">
 
@@ -59,7 +60,7 @@
                                                     <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                                                 </svg>
                                             </a>
-                                       
+
 
                                         @auth
                                             @csrf
@@ -87,7 +88,7 @@
                             @csrf
                             <a href="{{ route('users.create')}}" class="btn btn-primary">New User<a/>
                         </form>
-                    
+
                 </div>
             </div>
             <div class="card-body">
@@ -108,7 +109,7 @@
                             @if($user->rol != 'Supervisor')
                             <tr>
                                 <th scope="row">{{ $i++ }}</th>
-                                
+
                                 <td>{{ $user->rol }}</td>
                                 <td>{{ $user->nombre }}</td>
                                 <td>{{ $user->apellido_paterno }}</td>
@@ -120,14 +121,14 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill m-9" viewBox="0 0 16 16">
                                             <path d="M3.5 11.5a3.5 3.5 0 1 1 3.163-5H14L15.5 8 14 9.5l-1-1-1 1-1-1-1 1-1-1-1 1H6.663a3.5 3.5 0 0 1-3.163 2zM2.5 9a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
                                           </svg>
-                                    </a>  
-                                
+                                    </a>
 
-                                   
+
+
                                 </td>
-                               
+
                             </tr>
-                            @endif 
+                            @endif
                             @endforeach
                         </tbody>
                     </table>

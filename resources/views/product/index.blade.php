@@ -89,17 +89,18 @@
                                 @endforeach
 
                                 @auth
-                                    @if ($product->concesionado == '0')
-                                        <td>{{$Product->motivo}}</td>
-                                    @else
-                                        @if ($product->concesionado == '1')
-                                            <td>Valido para venta</td>
-                                        @else
-                                            <td>---</td>
-                                        @endif
-                                    @endif
                                     @if (Auth::user()->estado != 'Vendedor')
                                         <td>{{Auth::user()->nombre($product->user_id)}}</td>
+                                    @else
+                                        @if ($product->concesionado == '0')
+                                            <td>{{$Product->motivo}}</td>
+                                        @else
+                                            @if ($product->concesionado == '1')
+                                                <td>Valido para venta</td>
+                                            @else
+                                                <td>---</td>
+                                            @endif
+                                        @endif
                                     @endif
                                     @if (Auth::user()->rol == "Cliente")
                                         @if (Auth::user()->estado == "Comprador")

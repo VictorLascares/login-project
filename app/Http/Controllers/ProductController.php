@@ -42,7 +42,7 @@ class ProductController extends Controller
                 case 'Supervisor':
                     # todos
                     $user = 'Supervisor';
-                    $products = Product::all();
+                    $products = Product::aceptadosrechazados()->get();
                     break;
                 case 'Contador':
                     # code...
@@ -70,7 +70,11 @@ class ProductController extends Controller
                     $products = Product::propuestos()->name($request->input('name'))->get();
                 } else {
                     if(Auth::user()->estado == 'Comprador'){
-                        $products = Product::aceptados()->name($request->input('name'))->get();//Concesionados;
+                        if(Auth::user()->rol == 'Supervisor'){
+                            $products = Product::aceptadosrechazados()->name($request->input('name'))->get();//Concesionados;
+                        }else{
+                            $products = Product::aceptados()->get();
+                        }//Concesionados;
                     }else{
                         $products = Product::propios(Auth::user()->id)->name($request->input('name'))->get();//Propiod;
                     }
@@ -82,7 +86,11 @@ class ProductController extends Controller
                         $products = Product::propuestos()->get();
                     } else {
                         if(Auth::user()->estado == 'Comprador'){
-                            $products = Product::aceptados()->get();//Concesionados;
+                            if(Auth::user()->rol == 'Supervisor'){
+                                $products = Product::aceptados()->rechazados()->get();//Concesionados;
+                            }else{
+                                $products = Product::aceptados()->get();
+                            }
                         }else{
                             $products = Product::propios(Auth::user()->id)->get();//Propiod;
                         }
@@ -119,7 +127,7 @@ class ProductController extends Controller
                             if($category != null){
                                 $id_category = $category->id;
                             }
-                            $products = Product::rechazados()->aceptados()->category($id_category)->get();
+                            $products = Product::aceptadosrechazados()->category($id_category)->get();
                             break;
                         case 'Contador':
                             # code...
