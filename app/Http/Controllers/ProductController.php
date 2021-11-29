@@ -219,15 +219,17 @@ class ProductController extends Controller
         return redirect()->route('products.index');
     }
 
-    public function consignar($id){
-
+    public function consignar(Request $request,$id){
         $seleccionado = Product::find($id);
-        $this->authorize('consignar',$seleccionado);
-
-        $seleccionado->concesionado=true;
-
+        if ($request->porcentaje) {
+            $seleccionado->porcentaje = $request->input('porcentaje');
+            $this->authorize('consignar',$seleccionado);
+            $seleccionado->concesionado=true;
+            event(new ProductConcesionado($seleccionado));
+        } else {
+            $seleccionado->motivo = $request->input('motivo');
+        }
         $seleccionado->save();
-        event(new ProductConcesionado($seleccionado));
 
         return redirect('products');
     }

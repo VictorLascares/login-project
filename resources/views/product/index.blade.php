@@ -88,11 +88,6 @@
                                             </a>
                                         @endcan
 
-                                        @can('consignar', $product)
-                                            <a href="/product/{{$product->id}}/consignar" class="btn btn-danger">CONCESIONAR
-                                            </a>
-                                        @endcan
-
                                         @auth
                                             @csrf
                                             @method('DELETE')
