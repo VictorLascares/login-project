@@ -2,6 +2,31 @@
 @section('content')
 
     @auth
+        @if (Auth::user()->rol =='Cliente')
+
+                <a href="/estado/{{Auth::user()->id}}/Comprador" method="POST">
+                    <button type="button" class="btn btn-primary">Comprar</button>
+                </a>
+                <a href="/estado/{{Auth::user()->id}}/Vendedor" method="POST">
+                    <button type="button" class="btn btn-primary">Vender</button>
+                </a>
+        @endif
+
+        @if (Auth::user()->rol =='Encargado')
+            <a href="/users">
+                <button type="button" class="btn btn-primary">Usuarios</button>
+            </a>
+            <a href="/products">
+                <button type="button" class="btn btn-primary">Productos</button>
+            </a>
+            <a href="/categories">
+                <button type="button" class="btn btn-primary">Categorias</button>
+            </a>
+            <div id="overlay">
+                <h2>Selecciona la forma de Pago</h2>
+            </div>
+
+        @endif
 
 		@if(Auth::user()->rol == 'Supervisor')
 		<div class="row">
@@ -177,11 +202,14 @@
                 </div>
 			@endif
 @endauth
-<script type="text/javascript" >
-    
-    
-    
-</script>
+@guest
+    <a href="/products">
+        <button type="button" class="btn btn-primary">Productos</button>
+    </a>
+    <a href="/categories">
+        <button type="button" class="btn btn-primary">Categorias</button>
+    </a>
+@endguest
 @endsection
 
 
