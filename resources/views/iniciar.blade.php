@@ -2,46 +2,23 @@
 @section('content')
 
     @auth
-        @if (Auth::user()->rol =='Cliente')
-
-                <a href="/estado/{{Auth::user()->id}}/Comprador" method="POST">
-                    <button type="button" class="btn btn-primary">Comprar</button>
-                </a>
-                <a href="/estado/{{Auth::user()->id}}/Vendedor" method="POST">
-                    <button type="button" class="btn btn-primary">Vender</button>
-                </a>
-        @endif
-
-        @if (Auth::user()->rol =='Encargado')
-            <a href="/users">
-                <button type="button" class="btn btn-primary">Usuarios</button>
-            </a>
-            <a href="/products">
-                <button type="button" class="btn btn-primary">Productos</button>
-            </a>
-            <a href="/categories">
-                <button type="button" class="btn btn-primary">Categorias</button>
-            </a>
-            <div id="overlay">
-                <h2>Selecciona la forma de Pago</h2>
-            </div>    
-
-        @endif
 
 		@if(Auth::user()->rol == 'Supervisor')
 		<div class="row">
 			<div class="col-xl-6 col-md-5 col-sm-4">
-			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
-			<div class="card-header"><h3>Usuarios registrados</h1></div>
-			<div class="card-body">
-		  		<h5 class="card-title">{{$contador}}  </h5>
-			</div>
-			</div>
+			    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+                    <div class="card-header">
+                        <h3 class="card-title">Usuarios registrados</h1>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{$contador}}</h5>
+                    </div>
+			    </div>
 			</div>
 			<div class="">
-			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
-			<div class="card-header"><h3>Transacciones</h1></div>
-			<div class="card-body">
+			    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+			        <div class="card-header"><h3>Transacciones</h1></div>
+			            <div class="card-body">
 				<h5 class="card-title">Primary card title</h5>
 
 			</div>
@@ -198,17 +175,6 @@
                         </table>
                     </div>
                 </div>
-
-			</div>
-				<a href="/users">
-					<button type="button" class="btn btn-primary">Usuarios</button>
-				</a>
-                <a href="/products">
-					<button type="button" class="btn btn-primary">Productos</button>
-				</a>
-                <a href="/categories">
-					<button type="button" class="btn btn-primary">Categorias</button>
-				</a>
 			@endif
 @endauth
 <script type="text/javascript" >
