@@ -47,7 +47,27 @@
                             </div>
                         </form>
 
+                        <input id="btnComprar" type="button" value="Pagar">
+                        <div class="forma-pago mt-2" style="display: none">
+                            <button id="pago-linea" class="btn btn-success">En Linea</button>
+                            <button id="pago-banco" class="btn btn-success">Banco</button>
+                        </div>
+                        <form id="metodo-pago" class="mt-4" id="accionesCliente" method="POST" action="">
+                            @csrf
+                            <div class="en-linea" style="display: none">
+                                <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidad">
+                                <button type="submit">Aceptar</button>
+                            </div>
+                            <div class="banco" style="display: none">
+                                <div class="input-group form-group">
+									<input type="file" class="form-control" id="ticket" name="ticket">
+                                    <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidad">
+                                    <button type="submit">Aceptar</button>
+								</div>
+                            </div>
+                        </form>
                     @endif
+
                     @can('consignar', $product)
                             <button id="consignar"  class="btn btn-success">CONCESIONAR</button>
                             <button id="noConsignar" class="btn btn-danger">NO CONCESIONAR</button>
@@ -96,46 +116,83 @@
     </div>
 </div>
 <script type="text/javascript" >
-    const consignar = document.querySelector('#consignar')
-    const noConsignar = document.querySelector('#noConsignar')
     const overlay = document.getElementById('#overlay');
-    const entrada = document.createElement("INPUT");
-    const submit = document.createElement("INPUT");
-    submit.type = 'submit'
-    submit.classList.add = 'btn'
-    submit.classList.add = 'btn-primary'
-    submit.value = 'Agregar';
-    overlay.appendChild(submit);
-    overlay.style.display = "none";
-    consignar.addEventListener('click', function(e) {
-        e.preventDefault();
-        mostrarInputNumber();
-    })
+    if(overlay!==null){
+        const consignar = document.querySelector('#consignar')
+        const noConsignar = document.querySelector('#noConsignar')
+        const entrada = document.createElement("INPUT");
+        const submit = document.createElement("INPUT");
+        submit.type = 'submit'
+        submit.classList.add = 'btn'
+        submit.classList.add = 'btn-primary'
+        submit.value = 'Agregar';
+        overlay.appendChild(submit);
+        overlay.style.display = "none";
 
-    noConsignar.addEventListener('click', function(e) {
-        e.preventDefault();
-        mostrarInputText();
-    })
-    function mostrarInputNumber(){
-        noConsignar.disabled = false;
-        consignar.disabled = true;
-        entrada.type = "number";
-        entrada.name = "porcentaje";
-        entrada.placeholder = "Porcentaje";
-        overlay.appendChild(entrada);
-        overlay.style.display = "flex";
-        overlay.style.flexDirection = "row-reverse"
+        consignar.addEventListener('click', function(e) {
+            e.preventDefault();
+            mostrarInputNumber();
+        })
+        noConsignar.addEventListener('click', function(e) {
+            e.preventDefault();
+            mostrarInputText();
+        })
+        function mostrarInputNumber(){
+            noConsignar.disabled = false;
+            consignar.disabled = true;
+            entrada.type = "number";
+            entrada.name = "porcentaje";
+            entrada.placeholder = "Porcentaje";
+            overlay.appendChild(entrada);
+            overlay.style.display = "flex";
+            overlay.style.flexDirection = "row-reverse"
+        }
+        function mostrarInputText(){
+            consignar.disabled = false;
+            noConsignar.disabled = true;
+            entrada.type = "text";
+            entrada.name = "motivo";
+            overlay.appendChild(entrada);
+            entrada.placeholder = "Motivo";
+            overlay.appendChild(entrada);
+            overlay.style.display = "flex";
+            overlay.style.flexDirection = "row-reverse"
+        }
     }
-    function mostrarInputText(){
-        consignar.disabled = false;
-        noConsignar.disabled = true;
-        entrada.type = "text";
-        entrada.name = "motivo";
-        overlay.appendChild(entrada);
-        entrada.placeholder = "Motivo";
-        overlay.appendChild(entrada);
-        overlay.style.display = "flex";
-        overlay.style.flexDirection = "row-reverse"
+    const comprar = document.querySelector('#btnComprar')
+    const form = document.querySelector('#accionesCliente')
+    const formaPago = document.querySelector('.forma-pago')
+    const enLinea = document.querySelector('.en-linea')
+    const banco = document.querySelector('.banco')
+    const pagoLinea = document.querySelector('#pago-linea')
+    const pagoBanco = document.querySelector('#pago-banco')
+    const metodo = document.querySelector('#metodo-pago')
+
+    comprar.addEventListener('click', function(e) {
+        comprarProducto(e);
+    })
+    pagoLinea.addEventListener('click', function(e) {
+        banco.style.display = "none"
+        e.preventDefault()
+        pagarEnLinea()
+    })
+    pagoBanco.addEventListener('click', function(e) {
+        e.preventDefault()
+        enLinea.style.display = "none"
+        pagarEnBanco()
+    })
+    function comprarProducto(e){
+        formaPago.style.display = "block"
+
+    }
+
+    function pagarEnLinea() {
+        enLinea.style.display = "block"
+        metodo.action= "{{url('comprar/linea',$product->id)}}"
+    }
+    function pagarEnBanco() {
+        banco.style.display = "block"
+        metodo.action= "{{url('comprar/banco',$product->id)}}"
     }
 </script>
 @endsection
