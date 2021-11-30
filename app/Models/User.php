@@ -28,7 +28,6 @@ class User extends Authenticatable
         'activo',
         'password',
     ];
-    public $timestamps = false;
     public function nombreCompleto(){
         return $this->nombre." ".$this->apellido_paterno." ".$this->apellido_materno;
     }

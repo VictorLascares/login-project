@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Compra;
+use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Auth;
@@ -74,7 +76,33 @@ class UserController extends Controller
     public function show($id)
     {
         $user = User::find($id);
-        return view('usuarios.show', compact('user'));
+        $compras = Compra::all();
+        $transacciones = 0;
+        $productos = 0;
+        $aceptados = 0;
+        $comprados = 0;
+        $oferta = 0;
+        foreach ($compras as $compra) {
+            $product = Product::find($compra->product_id);
+            if($product->user_id == $id){
+                $transacciones++;
+                $comprados += $compra->cantidad;
+            }
+        }
+        $productosA = Product::productos($id)->get();
+        foreach ($productosA as $producto) {
+            $productos++;
+        }
+        $productosE = Product::productos($id)->existencia()->get();
+        foreach ($productosE as $producto) {
+            $oferta++;
+        }
+        $aceptadosA = Product::productos($id)->aceptados()->get();
+        foreach ($aceptadosA as $aceptado) {
+            $aceptados++;
+        }
+        $l = 1;
+        return view('usuarios.show', compact('user','l','transacciones','productos','aceptados','comprados','oferta'));
     }
 
     /**

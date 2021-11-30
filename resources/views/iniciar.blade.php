@@ -41,12 +41,52 @@
 			<div class="">
 			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
 			<div class="card-header"><h3>Transacciones</h1></div>
-			<div class="card-body">
-				<h5 class="card-title">Primary card title</h5>
 
 			</div>
 			</div>
-			</div>
+            <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-primary">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Producto</th>
+                                    <th scope="col">Vendedor</th>
+                                    <th scope="col">Porcentaje</th>
+                                    <th scope="col">Comprador</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Status</th>
+                                    <th scope="col">Fecha de creacion</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach ($compras as $compra)
+                                <tr>
+                                    <th scope="row">{{ $l++ }}</th>
+                                    @foreach ($productsA as $product)
+                                        @if ($product->id == $compra->product_id)
+                                            <td>
+                                                {{$product->name}}
+                                            </td>
+                                            <td>
+                                                {{Auth::user()->nombre($product->user_id)}}
+                                            </td>
+                                            <td>
+                                                {{$product->porcentaje}}%
+                                            </td>
+
+                                        @endif
+                                    @endforeach
+                                    <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                    <td>{{$compra->cantidad}}</td>
+                                    <td>{{$compra->estado}}</td>
+                                    <td>{{$compra->created_at}}</td>
+                                </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
 			<div class="">
 			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
 			<div class="card-header"><h3>Propuestas</h1></div>

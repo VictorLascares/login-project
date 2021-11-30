@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Product;
 use App\Models\Category;
+use App\Models\Compra;
 
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
@@ -16,12 +17,15 @@ class SessionController extends Controller
         $contador = 0;
         $usuarios = User::all();
         $products = Product::propuestos()->get();
+        $productsA = Product::aceptadosrechazados()->get();
+        $compras = Compra::all();
         foreach($usuarios as $usuario){
             $contador += 1;
         }
         $i = 1;
+        $l = 1;
         $categories = Category::all();
-        return view('iniciar',compact('contador','products','i','categories'));
+        return view('iniciar',compact('contador','products','i','categories','compras','l','productsA'));
     }
 
     public function salir(){

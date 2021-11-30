@@ -196,6 +196,39 @@
                     </table>
                 </div>
             </div>
+            @auth
+                @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Comprador')
+                    <div class="card text-white bg-primary mb-3" style="max-width: 40rem; float:rigth; margin: 10px;" >
+                        <div class="card-header"><h3>Productos comprados - Cantidad - Estado</h1></div>
+                            <div class="card-body">
+                                @foreach ($compras as $compra)
+                                    @foreach ($products as $product)
+                                        @if ($product->user_id == $compra->user_id)
+                                            <h5 class="card-title text-dark" ><a class="text-dark" href="{{route('products.show',$product->id)}}">{{$product->name}}</a> - {{$compra->cantidad}} - {{$compra->estado}}</h5>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+                @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Vendedor')
+                    <div class="card text-white bg-primary mb-3" style="max-width: 70rem; float:rigth; margin: 10px;" >
+                        <div class="card-header"><h3>Productos vendidos - Cantidad - Estado - Comprador</h1></div>
+                            <div class="card-body">
+                                @foreach ($products as $product)
+                                    @foreach ($compras as $compra)
+                                        @if ($product->id == $compra->product_id)
+                                            <h5 class="card-title text-dark" ><a class="text-dark" href="{{route('products.show',$product->id)}}">{{$product->name}}</a> - {{$compra->cantidad}} - {{$compra->estado}} - {{Auth::user()->nombre($compra->user_id)}}
+                                            <a href="{{url('/estado',$compra->id)}}" class="text-dark">Entregar</a></h5>
+                                        @endif
+                                    @endforeach
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endauth
         </div>
     </div>
 </div>

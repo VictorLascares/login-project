@@ -26,11 +26,21 @@ class Product extends Model
     public function scopeAceptadosrechazados($query){
         return $query->whereNotNull('concesionado');
     }
+    public function scopeExistencia($query){
+        return $query->whereNotIn('existencia',['0']);
+    }
     public function scopeCategory($query,$category_id){
         return $query->where('category_id',$category_id);
     }
     public function scopeName($query,$name){
         return $query->where('name',$name);
+    }
+    public function search($query,$id){
+        $producto = Product::where('id', $id);;
+        return $producto->name;
+    }
+    public function scopeProductos($query,$user_id){
+        return $query->where('user_id',$user_id);
     }
 
 

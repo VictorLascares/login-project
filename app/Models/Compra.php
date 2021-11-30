@@ -10,4 +10,8 @@ class Compra extends Model
     use HasFactory;
 
     protected $fillable = ['cantidad','pago','ticket','calificacion','estado','user_id','product_id'];
+
+    public function scopeSearch($query,$id){
+        return $query->where('product_id',$id);
+    }
 }

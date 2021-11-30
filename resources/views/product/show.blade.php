@@ -52,20 +52,22 @@
                             <button id="pago-linea" class="btn btn-success">En Linea</button>
                             <button id="pago-banco" class="btn btn-success">Banco</button>
                         </div>
-                        <form id="metodo-pago" class="mt-4" id="accionesCliente" method="POST" action="">
-                            @csrf
-                            <div class="en-linea" style="display: none">
-                                <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidad">
-                                <button type="submit">Aceptar</button>
-                            </div>
-                            <div class="banco" style="display: none">
-                                <div class="input-group form-group">
-									<input type="file" class="form-control" id="ticket" name="ticket">
-                                    <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidad">
+                        @if ($product->existencia >= 1)
+                            <form id="metodo-pago" class="mt-4" id="accionesCliente" method="POST" action="" enctype="multipart/form-data">
+                                @csrf
+                                <div class="en-linea" style="display: none">
+                                    <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidadLinea">
                                     <button type="submit">Aceptar</button>
-								</div>
-                            </div>
-                        </form>
+                                </div>
+                                <div class="banco" style="display: none">
+                                    <div class="input-group form-group">
+                                        <input type="file" class="form-control" id="ticket" name="ticket">
+                                        <input type="number" max="{{$product->existencia}}"  min="1" placeholder="Cantidad" name="cantidad">
+                                        <button type="submit">Aceptar</button>
+                                    </div>
+                                </div>
+                            </form>
+                        @endif
                     @endif
 
                     @can('consignar', $product)
@@ -112,7 +114,45 @@
                     @endif
                 @endforeach
             </div>
+
+
         </div>
+        @auth
+            @if (Auth::user()->rol == 'Supervisor')
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-primary">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Vendedor</th>
+                                    <th scope="col">Porcentaje</th>
+                                    <th scope="col">Comprador</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Estado</th>
+                                    <th scope="col">Fecha de creacion</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                @foreach ($compras as $compra)
+                                    <th scope="row">{{ $l++ }}</th>
+                                    <td>
+                                        {{Auth::user()->nombre($product->user_id)}}
+                                    </td>
+                                    <td>
+                                        {{$product->porcentaje}}%
+                                    </td>
+                                    <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                    <td>{{$compra->cantidad}}</td>
+                                    <td>{{$compra->estado}}</td>
+                                    <td>{{$compra->created_at}}</td>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            @endif
+        @endauth
     </div>
 </div>
 <script type="text/javascript" >

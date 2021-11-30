@@ -47,6 +47,7 @@ Route::resource('products', ProductController::class);
 Route::get('/product/{category_id}',['App\Http\Controllers\ProductController','indexCategory']);
 Route::post('/product/{null}',['App\Http\Controllers\ProductController','indexCategory']);
 Route::get('/estado/{id}/{estado}',['App\Http\Controllers\UserController','updateEstado']);
+Route::get('/estado/{id}',['App\Http\Controllers\CompraController','updateEstado']);
 
 Route::resource('questions', QuestionController::class);
 

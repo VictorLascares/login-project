@@ -27,6 +27,7 @@ class CreateUsersTable extends Migration
             $table->string('password',100);
             $table->unique(["correo"],'correo_UNIQUE');
             $table->index(["nombre"], 'acendente');
+            $table->timestamps();
         });
     }
 

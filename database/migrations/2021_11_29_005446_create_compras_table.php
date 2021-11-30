@@ -16,7 +16,7 @@ class CreateComprasTable extends Migration
         Schema::create('compras', function (Blueprint $table) {
             $table->engine='InnoDB';
             $table->id();
-            $table->integer('cantidad');
+            $table->integer('cantidad')->nullable()->default(1);
             $table->boolean('pago')->default(false);
             $table->string('ticket',30)->nullable()->default(null);
             $table->integer('calificacion')->default(0);

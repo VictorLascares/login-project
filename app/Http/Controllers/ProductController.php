@@ -8,6 +8,7 @@ use App\Models\Product;
 use App\Models\User;
 use App\Models\Question;
 use App\Models\Registro;
+use App\Models\Compra;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,6 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
+        $compras = Compra::search(Auth::user()->id)->get();
         if(Auth::user() != null){
             switch (Auth::user()->rol) {
                 case 'Cliente':
@@ -32,6 +34,7 @@ class ProductController extends Controller
                     if(Auth::user()->estado == 'Comprador'){
                         $products = Product::aceptados()->get();//Concesionados;
                     }else{
+                        $compras = Compra::all();
                         $products = Product::propios(Auth::user()->id)->get();//Propiod;
                     }
                     break;
@@ -60,11 +63,12 @@ class ProductController extends Controller
         $i = 1;
 
         $categories = Category::all();
-        return view('product.index', compact('products', 'i', 'categories','user'));
+        return view('product.index', compact('products', 'i', 'categories','user','compras'));
     }
 
     public function indexCategory(Request $request,$id_category)
     {
+        $compras = Compra::search(Auth::user()->id)->get();
         if(Auth::user() != null){
             if($request->input('name') != ''){
                 if(Auth::user()->rol == 'Encargado') {
@@ -77,6 +81,7 @@ class ProductController extends Controller
                             $products = Product::aceptados()->get();
                         }//Concesionados;
                     }else{
+                        $compras = Compra::all();
                         $products = Product::propios(Auth::user()->id)->name($request->input('name'))->get();//Propiod;
                     }
                 }
@@ -93,6 +98,7 @@ class ProductController extends Controller
                                 $products = Product::aceptados()->get();
                             }
                         }else{
+                            $compras = Compra::all();
                             $products = Product::propios(Auth::user()->id)->get();//Propiod;
                         }
                     }
@@ -109,6 +115,7 @@ class ProductController extends Controller
                             if(Auth::user()->estado == 'Comprador'){
                                 $products = Product::aceptados()->category($id_category)->get();//Concesionados;
                             }else{
+                                $compras = Compra::all();
                                 $products = Product::propios(Auth::user()->id)->category($id_category)->get();//Propiod;
                             }
                             break;
@@ -155,7 +162,7 @@ class ProductController extends Controller
         $i = 1;
 
         $categories = Category::all();
-        return view('product.index', compact('products', 'i', 'categories','user'));
+        return view('product.index', compact('products', 'i', 'categories','user','compras'));
     }
 
     /**
@@ -205,9 +212,11 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
+        $l = 1;
+        $compras = Compra::search($id)->get();
         $category = Category::where('id',$product->category_id)->first();
         $questions = Question::where('product_id',$id)->paginate(10);
-        return view('product.show', compact('product', 'category', 'questions'));
+        return view('product.show', compact('product', 'category', 'questions','compras','l'));
     }
 
     /**

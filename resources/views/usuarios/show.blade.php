@@ -28,10 +28,34 @@
         <img src="{{ asset("fotos/".$user->imagen) }}" alt="Imagen usuario">
     </div>
     <br>
+    <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-primary">
+                            <thead>
+                                <tr class="text-center">
+                                    <th scope="col">#</th>
+                                    <th scope="col">Fecha alta</th>
+                                    <th scope="col">Transacciones</th>
+                                    <th scope="col">Productos</th>
+                                    <th scope="col">Productos concesionados</th>
+                                    <th scope="col">Productos comprados</th>
+                                    <th scope="col">Productos en oferta</th>
+                                </tr>
+                            </thead>
+                            <tbody class="text-center">
+                                <th scope="row">{{ $l++ }}</th>
+                                <th scope="row">{{$user->created_at}}</th>
+                                <th scope="row">{{$transacciones}}</th>
+                                <th scope="row">{{$productos}}</th>
+                                <th scope="row">{{$aceptados}}</th>
+                                <th scope="row">{{$comprados}}</th>
+                                <th scope="row">{{$oferta}}</th>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
     <div class="form-group">
         <a href="/users" class="btn btn-primary">Atras</a>
     </div>
-
-
 </div>
 @endsection
