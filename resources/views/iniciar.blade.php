@@ -31,17 +31,19 @@
 		@if(Auth::user()->rol == 'Supervisor')
 		<div class="row">
 			<div class="col-xl-6 col-md-5 col-sm-4">
-			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
-			<div class="card-header"><h3>Usuarios registrados</h1></div>
-			<div class="card-body">
-		  		<h5 class="card-title">{{$contador}}  </h5>
-			</div>
-			</div>
+			    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+                    <div class="card-header">
+                        <h3 class="card-title">Usuarios registrados</h1>
+                    </div>
+                    <div class="card-body">
+                        <h5 class="card-title">{{$contador}}</h5>
+                    </div>
+			    </div>
 			</div>
 			<div class="">
+
 			<div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
 			<div class="card-header"><h3>Transacciones</h1></div>
-
 			</div>
 			</div>
             <div class="card-body">
@@ -238,17 +240,6 @@
                         </table>
                     </div>
                 </div>
-
-			</div>
-				<a href="/users">
-					<button type="button" class="btn btn-primary">Usuarios</button>
-				</a>
-                <a href="/products">
-					<button type="button" class="btn btn-primary">Productos</button>
-				</a>
-                <a href="/categories">
-					<button type="button" class="btn btn-primary">Categorias</button>
-				</a>
 			@endif
 @endauth
 @guest

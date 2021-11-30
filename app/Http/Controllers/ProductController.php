@@ -25,8 +25,9 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $compras = Compra::search(Auth::user()->id)->get();
+        $compras = [];
         if(Auth::user() != null){
+            $compras = Compra::searchu(Auth::user()->id)->get();
             switch (Auth::user()->rol) {
                 case 'Cliente':
                     # PROPIOS
@@ -68,8 +69,9 @@ class ProductController extends Controller
 
     public function indexCategory(Request $request,$id_category)
     {
-        $compras = Compra::search(Auth::user()->id)->get();
+        $compras = [];
         if(Auth::user() != null){
+            $compras = Compra::searchu(Auth::user()->id)->get();
             if($request->input('name') != ''){
                 if(Auth::user()->rol == 'Encargado') {
                     $products = Product::propuestos()->name($request->input('name'))->get();
@@ -216,7 +218,10 @@ class ProductController extends Controller
         $compras = Compra::search($id)->get();
         $category = Category::where('id',$product->category_id)->first();
         $questions = Question::where('product_id',$id)->paginate(10);
-        return view('product.show', compact('product', 'category', 'questions','compras','l'));
+        $com = Compra::searchu(Auth::user()->id)->search($id);
+        $compra = $com->first();
+
+        return view('product.show', compact('product', 'category', 'questions','compras','l','compra'));
     }
 
     /**

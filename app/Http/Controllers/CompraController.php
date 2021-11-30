@@ -46,4 +46,12 @@ class CompraController extends Controller
 
         return redirect()->route('products.index');
     }
+
+    public function updateCalificado(Request $request, $id){
+        $compra = Compra::find($id);
+        $compra->calificacion = $request->input('estrellas');
+        $compra->save();
+
+        return redirect()->route('products.index');
+    }
 }
