@@ -93,7 +93,7 @@
                                         <td>{{Auth::user()->nombre($product->user_id)}}</td>
                                     @else
                                         @if ($product->concesionado == '0')
-                                            <td>{{$Product->motivo}}</td>
+                                            <td>{{$product->motivo}}</td>
                                         @else
                                             @if ($product->concesionado == '1')
                                                 <td>Valido para venta</td>
@@ -126,11 +126,11 @@
                                         @else
                                             @if ($product->concesionado == '1')
                                                 <td>Aceptado</td>
+                                            @else
+                                                @if ($product->concesionado == '0')
+                                                    <td>Rechazado</td>
                                                 @else
-                                                    @if ($product->concesionado == '0')
-                                                        <td>Rechazado</td>
-                                                    @else
-                                                        <td>Pendiente</td>
+                                                    <td>Pendiente</td>
                                                 @endif
                                             @endif
                                         @endif

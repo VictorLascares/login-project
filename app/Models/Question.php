@@ -10,4 +10,8 @@ class Question extends Model
     use HasFactory;
 
     protected $fillable = ['question','answer','product_id'];
+
+    public function scopeQproduct($query,$product_id){
+        return $query->where('product_id',$product_id);
+    }
 }

@@ -7,6 +7,7 @@ use App\Models\Product;
 
 use App\Models\User;
 use App\Models\Question;
+use App\Models\Registro;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -249,6 +250,7 @@ class ProductController extends Controller
         $product->existencia = $request->existencia;
         $product->price = $request->price;
         $product->category_id = $request->category_id;
+        $product->concesionado = null;
         $product->save();
 
         return redirect()->route('products.index');
@@ -266,7 +268,16 @@ class ProductController extends Controller
         $product=Product::find($id);
         $path = $product->imagen;
         unlink(public_path('fotos/products/'.$path));
+        $questions = Question::qproduct($id);
+        foreach($questions as $question){
+            Question::destroy($question->id);
+        }
+        $registros = Registro::rproduct($id);
+        foreach($registros  as $registro){
+            Registro::destroy($registro->id);
+        }
         Product::destroy($id);
+
         return redirect()->route('products.index');
     }
 
@@ -279,6 +290,7 @@ class ProductController extends Controller
             event(new ProductConcesionado($seleccionado));
         } else {
             $seleccionado->motivo = $request->input('motivo');
+            $seleccionado->concesionado = 0;
         }
         $seleccionado->save();
 

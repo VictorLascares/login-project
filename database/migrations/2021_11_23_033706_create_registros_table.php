@@ -20,7 +20,7 @@ class CreateRegistrosTable extends Migration
             $table->string('accion',100);
             $table->string('que',100);
             $table->timestamps();
-            $table->foreignId('product_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('product_id');
         });
     }
 

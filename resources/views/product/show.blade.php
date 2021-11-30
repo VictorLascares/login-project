@@ -46,7 +46,9 @@
                                 <input class="btn btn-primary" type="submit" value="Send">
                             </div>
                         </form>
-                        @can('consignar', $product)
+
+                    @endif
+                    @can('consignar', $product)
                             <button id="consignar"  class="btn btn-success">CONCESIONAR</button>
                             <button id="noConsignar" class="btn btn-danger">NO CONCESIONAR</button>
                             <form id="#overlay" class="row-reverse" method="POST" action="/product/{{$product->id}}/consignar">
@@ -54,7 +56,6 @@
                                 @csrf
                             </form>
                         @endcan
-                    @endif
                 @endauth
             </div>
         </div>
