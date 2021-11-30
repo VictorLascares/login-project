@@ -209,5 +209,13 @@
 				</a>
 			@endif
 @endauth
+@guest
+    <a href="/products">
+        <button type="button" class="btn btn-primary">Productos</button>
+    </a>
+    <a href="/categories">
+        <button type="button" class="btn btn-primary">Categorias</button>
+    </a>
+@endguest
 @endsection
 
