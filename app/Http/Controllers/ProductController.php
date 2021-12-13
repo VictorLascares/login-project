@@ -214,12 +214,16 @@ class ProductController extends Controller
     {
         //
         $product = Product::find($id);
+        $com = [];
+        $compra = [];
         $l = 1;
         $compras = Compra::search($id)->get();
         $category = Category::where('id',$product->category_id)->first();
         $questions = Question::where('product_id',$id)->paginate(10);
-        $com = Compra::searchu(Auth::user()->id)->search($id);
-        $compra = $com->first();
+        if(Auth::user() != null){
+            $com = Compra::searchu(Auth::user()->id)->search($id);
+            $compra = $com->first();
+        }
 
         return view('product.show', compact('product', 'category', 'questions','compras','l','compra'));
     }

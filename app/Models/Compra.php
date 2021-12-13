@@ -17,4 +17,11 @@ class Compra extends Model
     public function scopeSearchu($query,$user_id){
         return $query->where('user_id',$user_id);
     }
+
+    public function scopeStatus($query){
+        return $query->whereNotIn('estado',['Comprado']);
+    }
+    public function scopePago($query){
+        return $query->whereNotIn('pago',['false']);
+    }
 }

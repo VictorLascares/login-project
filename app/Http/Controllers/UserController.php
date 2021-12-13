@@ -19,10 +19,33 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
-        $user = User::all();
+        if(Auth::user() != null){
+
+            switch (Auth::user()->rol) {
+                case 'Cliente':
+                    # code...
+                    $users = [];
+                    break;
+
+                case 'Encargado':
+                    # PROPIOS
+                    $users = User::sinsupervisor()->get();
+                    break;
+
+                case 'Supervisor':
+                    # todos
+                    $users = User::all();
+                    break;
+                case 'Contador':
+                    # code...
+                    $users = User::clientes()->get();
+                    break;
+            }
+        }else{
+            $users = [];
+        }
         $i = 1;
-        return view('usuarios.index',compact('users','user','i'));
+        return view('usuarios.index',compact('users','i'));
     }
 
     /**
@@ -75,20 +98,29 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $costototal= 0;
+        $gananciavendedor = 0;
+        $gananciamercado = 0;
         $user = User::find($id);
         $compras = Compra::all();
+        $miscompras = [];
         $transacciones = 0;
         $productos = 0;
+        $productsA = Product::aceptados()->get();
         $aceptados = 0;
         $comprados = 0;
         $oferta = 0;
         foreach ($compras as $compra) {
             $product = Product::find($compra->product_id);
             if($product->user_id == $id){
+                if($compra->estado != 'Comprado' && $compra->pago == 'false'){
+                    array_push($miscompras,$compra);
+                }
                 $transacciones++;
                 $comprados += $compra->cantidad;
             }
         }
+
         $productosA = Product::productos($id)->get();
         foreach ($productosA as $producto) {
             $productos++;
@@ -102,7 +134,7 @@ class UserController extends Controller
             $aceptados++;
         }
         $l = 1;
-        return view('usuarios.show', compact('user','l','transacciones','productos','aceptados','comprados','oferta'));
+        return view('usuarios.show', compact('user','l','transacciones','productsA','productos','aceptados','comprados','oferta','miscompras','costototal','gananciavendedor','gananciamercado'));
     }
 
     /**

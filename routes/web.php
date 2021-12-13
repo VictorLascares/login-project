@@ -24,7 +24,6 @@ Route::get('/', function(){
 Route::post('comprar/{linea}/{product_id}',['App\Http\Controllers\CompraController','comprar']);
 Route::post('comprar/{banco}/{product_id}',['App\Http\Controllers\CompraController','comprar']);
 
-
 Route::get('iniciar',['App\Http\Controllers\SessionController','iniciar']);
 Route::get('salir',['App\Http\Controllers\SessionController','salir']);
 Route::post('validar',['App\Http\Controllers\SessionController','validar']);
