@@ -20,24 +20,28 @@
                             <a class="nav-link" href="/estado/{{Auth::user()->id}}/Vendedor" method="POST">Vender</a>
                         </div>
                     @endif
-                    @if (Auth::user()->rol =='Encargado' || Auth::user()->rol =='Supervisor')
+                    @if (Auth::user()->rol =='Encargado' || Auth::user()->rol =='Supervisor' || Auth::user()->rol == 'Contador')
                         <div class="nav-item">
                             <a class="nav-link" href="/users">
                                 Usuarios
                             </a>
                         </div>
-                        <div class="nav-item">
-                            <a class="nav-link" href="/products">
-                                Productos
-                            </a>
-                        </div>
-                        <div class="nav-item">
-                            <a class="nav-link" href="/categories">
-                                Categorias
-                            </a>
-                        </div>
+                        @if (Auth::user()->rol != 'Contador')
+                            <div class="nav-item">
+                                <a class="nav-link" href="/products">
+                                    Productos
+                                </a>
+                            </div>
+                            <div class="nav-item">
+                                <a class="nav-link" href="/categories">
+                                    Categorias
+                                </a>
+                            </div>
+                        @endif
+
+
                     @endif
-                    
+
                     <div class="w-100 d-flex align-items-center justify-content-end">
                         <div class="nav-item">
                             <a class="nav-link" href="/salir">SALIR</a>

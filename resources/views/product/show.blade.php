@@ -35,7 +35,8 @@
                 @auth
 
                     @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Comprador')
-                        @if ($compra->estado == 'Entregado')
+                        @if ($compra != null)
+                            @if ($compra->estado == 'Entregado')
                             <form class="d-flex align-items-center" method="POST" action="/calificado/{{$compra->id}}">
                                 @csrf
                                 <strong>Calificación: </strong>
@@ -53,6 +54,7 @@
                                 </div>
                             </form>
 
+                        @endif
                         @endif
                         <form action="{{ route('questions.store') }}" method="POST">
                             @csrf
@@ -154,21 +156,23 @@
                                     <th scope="col">Fecha de creacion</th>
                                 </tr>
                             </thead>
-                            <tbody class="text-center">
-                                @foreach ($compras as $compra)
-                                    <th scope="row">{{ $l++ }}</th>
-                                    <td>
-                                        {{Auth::user()->nombre($product->user_id)}}
-                                    </td>
-                                    <td>
-                                        {{$product->porcentaje}}%
-                                    </td>
-                                    <td>{{Auth::user()->nombre($compra->user_id)}}</td>
-                                    <td>{{$compra->cantidad}}</td>
-                                    <td>{{$compra->estado}}</td>
-                                    <td>{{$compra->created_at}}</td>
-                                @endforeach
-                            </tbody>
+                            @foreach ($compras as $compra)
+                                <tbody class="text-center">
+
+                                        <th scope="row">{{ $l++ }}</th>
+                                        <td>
+                                            {{Auth::user()->nombre($product->user_id)}}
+                                        </td>
+                                        <td>
+                                            {{$product->porcentaje}}%
+                                        </td>
+                                        <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                        <td>{{$compra->cantidad}}</td>
+                                        <td>{{$compra->estado}}</td>
+                                        <td>{{$compra->created_at}}</td>
+
+                                </tbody>
+                            @endforeach
                         </table>
                     </div>
                 </div>

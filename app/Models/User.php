@@ -37,5 +37,11 @@ class User extends Authenticatable
         return $user->nombre;
     }
 
+    public function scopeSinsupervisor($query){
+        return $query->whereNotIn('rol',['Supervisor']);
+    }
 
+    public function scopeClientes($query){
+        return $query->where('rol',['Cliente']);
+    }
 }
