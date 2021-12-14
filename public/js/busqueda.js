@@ -12,7 +12,7 @@ $('#correo').keyup(function(){
   if($('#correo').val()){
     let mail = $('#correo').val();
     var ruta = '/verificarcorreo'
-    // $('#valido').show();
+    $('#valido').show();
     $.ajax({
         url: ruta,
         type: 'post',
