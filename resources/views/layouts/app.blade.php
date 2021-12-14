@@ -74,6 +74,12 @@
         .clasificacion label:hover {
             cursor: pointer;
         }
+        .dark-mode-boton {
+            width: 1.5rem;
+        }
+        .dark-mode-boton:hover {
+            cursor: pointer;
+        }
 }
 </style>
 </head>

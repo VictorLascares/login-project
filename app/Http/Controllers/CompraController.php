@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Auth;
 class CompraController extends Controller
 {
     //
+    public function compras(){
+        $compras = Compra::all();
+        return view('contador.compras',compact('compras'));
+    }
 
     public function comprar(Request $request, $metodo,$id) {
         $compra = new Compra();

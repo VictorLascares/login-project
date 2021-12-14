@@ -137,7 +137,7 @@ class UserController extends Controller
             return redirect()->back()->with('error',"El password no esta bien confirmado");
             $user = User::find($id);
             $user['password']=Hash::make($request->input('password'));
-             $user->save();
+            $user->save();
             return redirect('users');
         }
 
@@ -181,6 +181,4 @@ class UserController extends Controller
         User::destroy($id);
         return redirect('users');
     }
-
-
 }
