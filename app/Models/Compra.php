@@ -18,10 +18,10 @@ class Compra extends Model
         return $query->where('user_id',$user_id);
     }
 
-    public function scopeStatus($query){
-        return $query->whereNotIn('estado',['Comprado']);
-    }
     public function scopePago($query){
         return $query->whereNotIn('pago',['false']);
+    }
+    public function scopeNopago($query){
+        return $query->where('pago',['false']);
     }
 }

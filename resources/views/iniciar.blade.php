@@ -215,6 +215,138 @@
                     </div>
                 </div>
 			@endif
+
+        @if (Auth::user()->rol == 'Contador')
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-primary">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">#</th>
+                                <th scope="col">Comprador</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Producto</th>
+                                <th scope="col">Vendedor</th>
+                                <th scope="col">Porcentaje</th>
+                                <th scope="col">Costo unitario</th>
+                                <th scope="col">Costo total</th>
+                                <th scope="col">Ganancia Vendedor</th>
+                                <th scope="col">Ganancia Mercado</th>
+                                <th scope="col">Pago</th>
+                                <th scope="col">Acción</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            @foreach ($cnoentregados as $compra)
+                            <tr>
+                                <th scope="row">{{ $l++ }}</th>
+                                <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                <td>{{$compra->cantidad}}</td>
+                                <td>{{$compra->estado}}</td>
+                                @foreach ($productsA as $product)
+                                    @if ($product->id == $compra->product_id)
+                                        <td>
+                                            {{$product->name}}
+                                        </td>
+                                        <td>
+                                            {{Auth::user()->nombre($product->user_id)}}
+                                        </td>
+                                        <td>
+                                            {{$product->porcentaje}}%
+                                        </td>
+                                        <td>
+                                            {{$product->price}}
+                                        </td>
+                                        <td>
+                                            {{$product->price*$compra->cantidad}}
+
+                                        </td>
+
+                                        <td>
+                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                        </td>
+
+                                        <td>
+                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                        </td>
+                                        @if ($compra->pago == true)
+                                            <td>
+                                                Pagado
+                                            </td>
+                                        @else
+                                            <td>
+                                                No pagado
+                                            </td>
+                                        @endif
+                                        <td>
+                                        @if ($compra->estado != 'Comprado')
+
+                                                @csrf
+                                                        <a href="#" class="btn btn-primary">Validar
+                                                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill m-9" viewBox="0 0 16 16">
+
+                                                            </svg>
+                                                        </a>
+
+                                            @endif
+                                        </td>
+                                    @endif
+
+                                @endforeach
+                            @endforeach
+                            @foreach ($centregados as $compra)
+                            <tr>
+                                <th scope="row">{{ $l++ }}</th>
+                                <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                <td>{{$compra->cantidad}}</td>
+                                <td>{{$compra->estado}}</td>
+                                @foreach ($productsA as $product)
+                                    @if ($product->id == $compra->product_id)
+                                        <td>
+                                            {{$product->name}}
+                                        </td>
+                                        <td>
+                                            {{Auth::user()->nombre($product->user_id)}}
+                                        </td>
+                                        <td>
+                                            {{$product->porcentaje}}%
+                                        </td>
+                                        <td>
+                                            {{$product->price}}
+                                        </td>
+                                        <td>
+                                            {{$product->price*$compra->cantidad}}
+
+                                        </td>
+
+                                        <td>
+                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                        </td>
+
+                                        <td>
+                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                        </td>
+
+                                    @endif
+
+                                @endforeach
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        @endif
+
+
+
+
+
+
+
+
+
+
 @endauth
 @endsection
 
