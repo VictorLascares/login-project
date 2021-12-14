@@ -14,18 +14,21 @@ use Illuminate\Http\Request;
 class SessionController extends Controller
 {
     public function iniciar(){
+        $compras = Compra::all();
+        $centregados = Compra::pago()->get();
+        $cnoentregados = Compra::nopago()->get();
         $contador = 0;
         $usuarios = User::all();
         $products = Product::propuestos()->get();
         $productsA = Product::aceptadosrechazados()->get();
-        $compras = Compra::all();
+
         foreach($usuarios as $usuario){
             $contador += 1;
         }
         $i = 1;
         $l = 1;
         $categories = Category::all();
-        return view('iniciar',compact('contador','products','i','categories','compras','l','productsA'));
+        return view('iniciar',compact('contador','products','i','categories','compras','l','productsA','centregados','cnoentregados'));
     }
 
     public function salir(){
