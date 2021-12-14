@@ -21,8 +21,8 @@ class CreateComprasTable extends Migration
             $table->string('ticket',30)->nullable()->default(null);
             $table->integer('calificacion')->default(0);
             $table->enum('estado',['Comprado','Validado','Entregado'])->default('Validado');
-            $table->decimal('mercado',10,2);
-            $table->decimal('ganancia',10,2);
+            $table->decimal('mercado',10,2)->nullable();
+            $table->decimal('ganancia',10,2)->nullable();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->foreignId('product_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
