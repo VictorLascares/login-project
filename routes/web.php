@@ -36,6 +36,7 @@ Route::get('register', function(){
 });
 
 Route::resource('users',UserController::class);
+
 Route::get('/user/editpass/{user_id}',['App\Http\Controllers\UserController','editpass']);
 
 Route::put('/product/{id}/consignar',['App\Http\Controllers\ProductController','consignar']);
@@ -53,3 +54,4 @@ Route::resource('questions', QuestionController::class);
 
 //Route::post('questions/addAnswer',['App\Http\Controllers\QuestionController','update']);
 
+Route::post('/verificarcorreo',['App\Http\Controllers\RegisterController','verificarCorreo']);
