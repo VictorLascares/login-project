@@ -56,7 +56,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('usuarios.sigup');
+        return view('auth.register');
     }//Usuario create
 
     /**
@@ -160,7 +160,7 @@ class UserController extends Controller
     public function editpass($id)
     {
         $user = User::find($id);
-        return view('usuarios.resetPassword', compact('user'));
+        return view('auth.reset-password', compact('user'));
     }
 
     /**

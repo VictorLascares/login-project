@@ -12,7 +12,7 @@
                         <a class="nav-link" href="{{url('compras')}}" method="POST">Compras</a>
                     </div>
                     @endif
-                    @if (Auth::user()->rol =='Cliente')
+                    @if (Auth::user()->rol == 'Cliente')
                         <div class="nav-item">
                             <a class="nav-link" href="/estado/{{Auth::user()->id}}/Comprador" method="POST">Comprar</a>
                         </div>
@@ -20,7 +20,7 @@
                             <a class="nav-link" href="/estado/{{Auth::user()->id}}/Vendedor" method="POST">Vender</a>
                         </div>
                     @endif
-                    @if (Auth::user()->rol =='Encargado' || Auth::user()->rol =='Supervisor' || Auth::user()->rol == 'Contador')
+                    @if (Auth::user()->rol == 'Encargado' || Auth::user()->rol =='Supervisor' || Auth::user()->rol == 'Contador')
                         <div class="nav-item">
                             <a class="nav-link" href="/users">
                                 Usuarios

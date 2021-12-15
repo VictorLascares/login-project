@@ -2,63 +2,59 @@
 @extends('layouts.app')
 @section('content')
 
-    <div class="row  h-25 w-75 p-3">
-        <h1>Actualizar datos de un usuario</h1>
-
-
-    <div class="form-group">
-        <label for="name_id" class="control-label">Nombre: {{$user->nombre}} </label>
-    </div>
-
-    <div class="form-group">
-        <label for="street1_id" class="control-label">Primer apellido: {{$user->apellido_paterno}}</label>
-
-    </div>
-
-    <div class="form-group">
-        <label for="street2_id" class="control-label">Segundo apellido: {{$user->apellido_materno}}</label>
-    </div>
-
-    <div class="form-group">
-        <label for="city_id" class="control-label">Correo electronico: {{$user->correo}}</label>
-    </div>
-
-    <div class="mb-3">
-        <label for="formFile" class="form-label">Imagen</label>
-        <img src="{{ asset("fotos/".$user->imagen) }}" alt="Imagen usuario">
-    </div>
-    <br>
-    @auth
-        @if (Auth::user()->rol == 'Supervisor')
-        <div class="card-body">
-            <div class="table-responsive">
-                <table class="table table-primary">
-                    <thead>
-                        <tr class="text-center">
-                            <th scope="col">#</th>
-                            <th scope="col">Fecha alta</th>
-                            <th scope="col">Transacciones</th>
-                            <th scope="col">Productos</th>
-                            <th scope="col">Productos concesionados</th>
-                            <th scope="col">Productos comprados</th>
-                            <th scope="col">Productos en oferta</th>
-                        </tr>
-                    </thead>
-                    <tbody class="text-center">
-                        <th scope="row">{{ $l++ }}</th>
-                        <th scope="row">{{$user->created_at}}</th>
-                        <th scope="row">{{$transacciones}}</th>
-                        <th scope="row">{{$productos}}</th>
-                        <th scope="row">{{$aceptados}}</th>
-                        <th scope="row">{{$comprados}}</th>
-                        <th scope="row">{{$oferta}}</th>
-                    </tbody>
-                </table>
+    <div class="card mt-4 mb-3">
+        <div class="row g-0">
+            <div class="card-header">
+                <div class="d-flex justify-content-end">
+                    <a href="/users" class="btn btn-primary">Regresar</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <img class="card-img-top" src="{{ asset("fotos/".$user->imagen) }}" alt="Imagen usuario">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h1 class="card-title">Usuario</h1>
+                    <p for="name_id" class="control-label"><span class="fw-bold">Nombre: </span> {{$user->nombre}} </p>
+                    <p for="street1_id" class="control-label"><span class="fw-bold">Apellido Paterno: </span> {{$user->apellido_paterno}}</p>
+                    <p for="street1_id" class="control-label"><span class="fw-bold">Apellido Materno: </span> {{$user->apellido_materno}}</p>
+                    <p for="street1_id" class="control-label"><span class="fw-bold">Correo Electronico: </span> {{$user->correo}}</p>
+                </div>
             </div>
         </div>
-        @endif
+    </div>
+
+
+
+    @auth
+        <div class="">
+            @if (Auth::user()->rol == 'Supervisor')
+                <div class="table-responsive">
+                    <table class="table table-primary">
+                        <thead>
+                            <tr class="text-center">
+                                <th scope="col">#</th>
+                                <th scope="col">Fecha alta</th>
+                                <th scope="col">Transacciones</th>
+                                <th scope="col">Productos</th>
+                                <th scope="col">Productos concesionados</th>
+                                <th scope="col">Productos comprados</th>
+                                <th scope="col">Productos en oferta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-center">
+                            <th scope="row">{{ $l++ }}</th>
+                            <th scope="row">{{$user->created_at}}</th>
+                            <th scope="row">{{$transacciones}}</th>
+                            <th scope="row">{{$productos}}</th>
+                            <th scope="row">{{$aceptados}}</th>
+                            <th scope="row">{{$comprados}}</th>
+                            <th scope="row">{{$oferta}}</th>
+                        </tbody>
+                    </table>
+                </div>
+            @endif
         @if (Auth::user()->rol == 'Contador')
-            <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-primary">
                         <thead>
@@ -74,7 +70,6 @@
                                 <th scope="col">Costo total</th>
                                 <th scope="col">Ganancia Vendedor</th>
                                 <th scope="col">Ganancia Mercado</th>
-
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -108,7 +103,6 @@
                                         <td>
                                             ${{$compra->mercado}}
                                         </td>
-
                                     @endif
 
                                 @endforeach
@@ -128,15 +122,20 @@
                                 <td>{{$costototal}}</td>
                                 <td>{{$gananciavendedor}}</td>
                                 <td>{{$gananciamercado}}</td>
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
+                <form class="d-flex justify-content-end" action="">
+                    <input class="btn btn-primary" type="submit" value="Pagar">
+                </form>
             </div>
         @endif
     @endauth
-    <div class="form-group">
-        <a href="/users" class="btn btn-primary">Atras</a>
-    </div>
 </div>
+<script type="text/javascript">
+
+
+</script>
 @endsection

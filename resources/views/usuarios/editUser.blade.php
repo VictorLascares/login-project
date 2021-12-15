@@ -1,5 +1,4 @@
 
-{{-- <!<!DOCTYPE> --}}
 @extends('layouts.app')
 @section('content')
 
