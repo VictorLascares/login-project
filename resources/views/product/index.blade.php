@@ -204,6 +204,16 @@
                     </div>
                 @endif
                 @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Vendedor')
+                    <div class="col-xl-6 col-md-5 col-sm-4">
+                        <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+                            <div class="card-header">
+                                <h3 class="card-title">Saldo</h1>
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">${{$gananciavendedor}}.00</h5>
+                            </div>
+                        </div>
+                    </div>
                     <div class="card text-white bg-primary mb-3" style="max-width: 70rem; float:rigth; margin: 10px;" >
                         <div class="card-header"><h3>Productos vendidos - Cantidad - Estado - Comprador</h1></div>
                             <div class="card-body">
@@ -211,7 +221,9 @@
                                     @foreach ($compras as $compra)
                                         @if ($product->id == $compra->product_id)
                                             <h5 class="card-title text-dark" ><a class="text-dark" href="{{route('products.show',$product->id)}}">{{$product->name}}</a> - {{$compra->cantidad}} - {{$compra->estado}} - {{Auth::user()->nombre($compra->user_id)}}
-                                            <a href="{{url('/estado',$compra->id)}}" class="text-dark">Entregar</a></h5>
+                                            @if ($compra->estado != 'Comprado')
+                                                <a href="{{url('/estado',$compra->id)}}" class="text-dark">Entregar</a></h5>
+                                            @endif
                                         @endif
                                     @endforeach
                                 @endforeach

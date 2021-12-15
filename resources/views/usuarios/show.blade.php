@@ -55,6 +55,7 @@
                 </div>
             @endif
         @if (Auth::user()->rol == 'Contador')
+                @if ($miscompras != null)
                 <div class="table-responsive">
                     <table class="table table-primary">
                         <thead>
@@ -127,10 +128,14 @@
                         </tbody>
                     </table>
                 </div>
-                <form class="d-flex justify-content-end" action="">
-                    <input class="btn btn-primary" type="submit" value="Pagar">
-                </form>
+
+                @csrf
+                <a class="btn btn-primary"  href="{{ url('/pagos',$id) }}">Pagar</a>
+
             </div>
+            @else
+            <p for="name_id" class="control-label">No hay compras por pagar al vendedor</p>
+            @endif
         @endif
     @endauth
 </div>

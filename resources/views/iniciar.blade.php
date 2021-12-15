@@ -217,6 +217,17 @@
 			@endif
 
         @if (Auth::user()->rol == 'Contador')
+
+        <div class="col-xl-6 col-md-5 col-sm-4">
+            <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+                <div class="card-header">
+                    <h3 class="card-title">Ganancia del mercado</h1>
+                </div>
+                <div class="card-body">
+                    <h5 class="card-title">${{$gananciamercado}}.00</h5>
+                </div>
+            </div>
+        </div>
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-primary">

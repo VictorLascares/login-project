@@ -13,7 +13,7 @@ class CompraController extends Controller
 {
     //
     public function compras(){
-        $compras = Compra::comprado()->get();   
+        $compras = Compra::comprado()->get();
         $productos = Product::all();
         $usuarios = User::all();
         return view('contador.compras',compact('compras','productos', 'usuarios'));
@@ -70,6 +70,16 @@ class CompraController extends Controller
 
         return redirect('/iniciar');
     }
+
+    public function updatePagos($id){
+        $compras = Compra::where('pago',false)->where('vendedor',$id)->whereNotIn('estado',['Comprado'])->get();
+        foreach ($compras as $compra) {
+            $compra->pago = true;
+            $compra->save();
+        }
+        return redirect('users');
+    }
+
 
     public function updateCalificado(Request $request, $id){
         $compra = Compra::find($id);

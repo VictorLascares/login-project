@@ -142,7 +142,7 @@ class UserController extends Controller
             $aceptados++;
         }
         $l = 1;
-        return view('usuarios.show', compact('user','l','transacciones','productsA','productos','aceptados','comprados','oferta','miscompras','costototal','gananciavendedor','gananciamercado'));
+        return view('usuarios.show', compact('user','l','transacciones','productsA','productos','aceptados','comprados','oferta','miscompras','costototal','gananciavendedor','gananciamercado','id'));
     }
 
     /**
