@@ -31,10 +31,10 @@ Route::get('salir',['App\Http\Controllers\SessionController','salir']);
 Route::post('validar',['App\Http\Controllers\SessionController','validar']);
 
 Route::get('login', function(){
-    return view('usuarios.login');
+    return view('auth.login');
 });
 Route::get('register', function(){
-    return view('usuarios.sigup');
+    return view('auth.register');
 });
 
 Route::resource('users',UserController::class);
