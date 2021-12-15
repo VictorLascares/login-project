@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Compra;
 use App\Models\Product;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -12,8 +13,10 @@ class CompraController extends Controller
 {
     //
     public function compras(){
-        $compras = Compra::all();
-        return view('contador.compras',compact('compras'));
+        $compras = Compra::comprado()->get();   
+        $productos = Product::all();
+        $usuarios = User::all();
+        return view('contador.compras',compact('compras','productos', 'usuarios'));
     }
 
     public function comprar(Request $request, $metodo,$id) {
@@ -45,10 +48,15 @@ class CompraController extends Controller
 
     public function updateEstado($id){
         $compra = Compra::find($id);
-        $compra->estado = 'Entregado';
-        $compra->save();
-
-        return redirect()->route('products.index');
+        if ($compra->estado == 'Validado') {
+            $compra->estado = 'Entregado';
+            $compra->save();
+            return redirect()->route('products.index');
+        } else {
+            $compra->estado = 'Validado';
+            $compra->save();
+            return redirect('compras');
+        }
     }
 
     public function updateCalificado(Request $request, $id){

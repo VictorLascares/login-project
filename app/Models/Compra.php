@@ -24,4 +24,7 @@ class Compra extends Model
     public function scopeNopago($query){
         return $query->where('pago',['false']);
     }
+    public function scopeComprado($query){
+        return $query->where('estado','Comprado');
+    }
 }
