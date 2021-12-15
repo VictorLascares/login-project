@@ -51,6 +51,7 @@ Route::post('/product/{null}',['App\Http\Controllers\ProductController','indexCa
 Route::get('/estado/{id}/{estado}',['App\Http\Controllers\UserController','updateEstado']);
 Route::get('/estado/{id}',['App\Http\Controllers\CompraController','updateEstado']);
 Route::post('/calificado/{id}',['App\Http\Controllers\CompraController','updateCalificado']);
+Route::get('/pago/{id}',['App\Http\Controllers\CompraController','updatePago']);
 
 Route::resource('questions', QuestionController::class);
 

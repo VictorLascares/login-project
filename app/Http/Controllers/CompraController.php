@@ -34,6 +34,10 @@ class CompraController extends Controller
             $compra->cantidad = $request->input('cantidadLinea');
             $producto->existencia = $producto->existencia - $request->input('cantidadLinea');
         }
+        $compra->ganancia = $producto->price*$compra->cantidad*(100-$producto->porcentaje)/100;
+        $compra->mercado = $producto->price*$compra->cantidad*($producto->porcentaje)/100;
+        $compra->vendedor = $producto->user_id;
+
         $compra->product_id = $id;
         $compra->user_id = Auth::user()->id;
 
@@ -49,6 +53,14 @@ class CompraController extends Controller
         $compra->save();
 
         return redirect()->route('products.index');
+    }
+
+    public function updatePago($id){
+        $compra = Compra::find($id);
+        $compra->pago = true;
+        $compra->save();
+
+        return redirect('/iniciar');
     }
 
     public function updateCalificado(Request $request, $id){

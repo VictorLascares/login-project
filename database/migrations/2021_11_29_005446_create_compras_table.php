@@ -24,6 +24,7 @@ class CreateComprasTable extends Migration
             $table->decimal('mercado',10,2)->nullable();
             $table->decimal('ganancia',10,2)->nullable();
             $table->foreignId('user_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
+            $table->integer('vendedor')->nullable(false);
             $table->foreignId('product_id')->constrained()->onUpdate('cascade')->onDelete('cascade');
             $table->timestamps();
         });

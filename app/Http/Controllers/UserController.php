@@ -9,6 +9,7 @@ use App\Models\Product;
 use Illuminate\Support\Facades\Hash;
 use App\Observers\UserObserver;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class UserController extends Controller
 {
@@ -101,6 +102,13 @@ class UserController extends Controller
         $costototal= 0;
         $gananciavendedor = 0;
         $gananciamercado = 0;
+        $comprasVendedor= DB::table('compras')->select('ganancia','mercado','cantidad','product_id')->where('pago',false)->where('vendedor',$id)->whereNotIn('estado',['Comprado'])->get();
+        foreach ($comprasVendedor as $comp) {
+            $gananciavendedor += $comp->ganancia;
+            $gananciamercado += $comp->mercado;
+            $productoVendedor = Product::find($comp->product_id);
+            $costototal += $productoVendedor->price*$comp->cantidad;
+        }
         $user = User::find($id);
         $compras = Compra::all();
         $miscompras = [];

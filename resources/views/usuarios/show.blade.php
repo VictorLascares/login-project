@@ -99,18 +99,16 @@
                                             {{$product->price}}
                                         </td>
                                         <td>
-                                            {{$product->price*$compra->cantidad}}
+                                            ${{$product->price*$compra->cantidad}}.00
+                                        </td>
 
-                                        </td>
-                                        {{$costototal+=$product->price*$compra->cantidad}}
                                         <td>
-                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                            ${{$compra->ganancia}}
                                         </td>
-                                        {{$gananciavendedor+=$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
                                         <td>
-                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                            ${{$compra->mercado}}
                                         </td>
-                                        {{$gananciamercado+=$product->price*$compra->cantidad*($product->porcentaje)/100}}
+
                                     @endif
 
                                 @endforeach
