@@ -106,38 +106,42 @@
                 <h2 class="card-title">Preguntas</h2>
             </div>
             <div class="card-body">
-                <form action="{{ route('questions.store') }}" method="POST">
-                    @csrf
-                    <div class="form-floating d-flex flex-column">
-                        <input class="form-control" type="text" name="question" id="product_question" placeholder="Question">
-                        <label for="product_question">¿Tienes alguna pregunta?</label>
-                    </div>
-                    <div class="d-none">
-                        <input type="text" name="product_id" value="{{ $product->id }}" id="product_question" placeholder="Question">
-                    </div>
-                    <div class="d-flex justify-content-end mt-2">
-                        <input class="btn btn-primary" type="submit" value="Send">
-                    </div>
-                </form>
+                @auth
+                    @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Comprador') 
+                        <form action="{{ route('questions.store') }}" method="POST">
+                            @csrf
+                            <div class="form-floating d-flex flex-column">
+                                <input class="form-control" type="text" name="question" id="product_question" placeholder="Question">
+                                <label for="product_question">¿Tienes alguna pregunta?</label>
+                            </div>
+                            <div class="d-none">
+                                <input type="text" name="product_id" value="{{ $product->id }}" id="product_question" placeholder="Question">
+                            </div>
+                            <div class="d-flex justify-content-end mt-2">
+                                <input class="btn btn-primary" type="submit" value="Send">
+                            </div>
+                        </form>
+                    @endif
+                @endauth
                 @foreach ($questions as $question)
                     @if ($question->answer == '')
-                    <p>{{ $question->question }}</p>
-                    @auth
-                        @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Vendedor')
-                            <form method="POST" action="{{ route('questions.update',$question->id)}}">
-                                @method('PUT')
-                                @csrf
-                                <div class="d-flex flex-column">
+                        <p>{{ $question->question }}</p>
+                        @auth
+                            @if (Auth::user()->rol  == 'Cliente' && Auth::user()->estado == 'Vendedor')
+                                <form method="POST" action="{{ route('questions.update',$question->id)}}">
+                                    @method('PUT')
+                                    @csrf
+                                    <div class="d-flex flex-column">
 
-                                    <input type="text" name="answer" placeholder="Responder">
-                                </div>
+                                        <input type="text" name="answer" placeholder="Responder">
+                                    </div>
 
-                                <div class="d-flex justify-content-end mt-2">
-                                    <input class="btn btn-primary btn-answer" type="submit" value="Send">
-                                </div>
-                            </form>
-                        @endif
-                    @endauth
+                                    <div class="d-flex justify-content-end mt-2">
+                                        <input class="btn btn-primary btn-answer" type="submit" value="Send">
+                                    </div>
+                                </form>
+                            @endif
+                        @endauth
                     @else
                     <div class="d-flex flex-column">
                         <label for="{{$question->id}}">{{ $question->question }}</label>
