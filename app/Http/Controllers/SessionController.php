@@ -21,14 +21,19 @@ class SessionController extends Controller
         $usuarios = User::all();
         $products = Product::propuestos()->get();
         $productsA = Product::aceptadosrechazados()->get();
-
+        $compraspagadas = Compra::where('pago',true)->get();
+        $gananciamercado = 0;
+        foreach ($compraspagadas as $compra) {
+            # code...
+            $gananciamercado += $compra->mercado;
+        }
         foreach($usuarios as $usuario){
             $contador += 1;
         }
         $i = 1;
         $l = 1;
         $categories = Category::all();
-        return view('iniciar',compact('contador','products','i','categories','compras','l','productsA','centregados','cnoentregados'));
+        return view('iniciar',compact('contador','products','i','categories','compras','l','productsA','centregados','cnoentregados','gananciamercado'));
     }
 
     public function salir(){

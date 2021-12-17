@@ -215,8 +215,19 @@
 		@endif
 
         @if (Auth::user()->rol == 'Contador')
-        <div class="card mt-4">
 
+
+<div class="col-xl-6 col-md-5 col-sm-4">
+    <div class="card text-white bg-primary mb-3" style="max-width: 20rem; float:rigth; margin: 10px;" >
+        <div class="card-header">
+            <h3 class="card-title">Ganancia del mercado</h3>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">${{$gananciamercado}}.00</h5>
+        </div>
+    </div>
+</div>
+<div class="card mt-4">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table">
@@ -259,31 +270,25 @@
                                             {{$product->price}}
                                         </td>
                                         <td>
-                                            {{$product->price*$compra->cantidad}}
+                                            ${{$product->price*$compra->cantidad}}
 
                                         </td>
 
                                         <td>
-                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                            ${{$compra->ganancia}}
                                         </td>
 
                                         <td>
-                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                            ${{$compra->mercado}}
                                         </td>
-                                        @if ($compra->pago == true)
-                                            <td>
-                                                Pagado
-                                            </td>
-                                        @else
-                                            <td>
-                                                No pagado
-                                            </td>
-                                        @endif
+                                        <td>
+                                            No pagado
+                                        </td>
                                         <td>
                                         @if ($compra->estado != 'Comprado')
 
                                                 @csrf
-                                                        <a href="#" class="btn btn-primary">Validar
+                                                        <a href="pago/{{$compra->id}}" class="btn btn-primary">Pagar
                                                             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-key-fill m-9" viewBox="0 0 16 16">
 
                                                             </svg>
@@ -316,18 +321,21 @@
                                             {{$product->price}}
                                         </td>
                                         <td>
-                                            {{$product->price*$compra->cantidad}}
+                                            ${{$product->price*$compra->cantidad}}
 
                                         </td>
 
                                         <td>
-                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                            ${{$compra->ganancia}}
                                         </td>
 
                                         <td>
-                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                            ${{$compra->mercado}}
                                         </td>
-
+                                        <td>
+                                            Pagado
+                                        </td>
+                                        <td></td>
                                     @endif
 
                                 @endforeach

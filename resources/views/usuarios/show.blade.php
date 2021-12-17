@@ -17,8 +17,8 @@
                     <h1 class="card-title">Usuario</h1>
                     <p for="name_id" class="control-label"><span class="fw-bold">Nombre: </span> {{$user->nombre}} </p>
                     <p for="street1_id" class="control-label"><span class="fw-bold">Apellido Paterno: </span> {{$user->apellido_paterno}}</p>
-                    <p for="street1_id" class="control-label"><span class="fw-bold">Apellido Materno: </span> {{$user->apellido_materno}}</p> 
-                    <p for="street1_id" class="control-label"><span class="fw-bold">Correo Electronico: </span> {{$user->correo}}</p>              
+                    <p for="street1_id" class="control-label"><span class="fw-bold">Apellido Materno: </span> {{$user->apellido_materno}}</p>
+                    <p for="street1_id" class="control-label"><span class="fw-bold">Correo Electronico: </span> {{$user->correo}}</p>
                 </div>
             </div>
         </div>
@@ -55,6 +55,7 @@
                 </div>
             @endif
         @if (Auth::user()->rol == 'Contador')
+                @if ($miscompras != null)
                 <div class="table-responsive">
                     <table class="table">
                         <thead>
@@ -94,19 +95,15 @@
                                             {{$product->price}}
                                         </td>
                                         <td>
-                                            {{$product->price*$compra->cantidad}}
+                                            ${{$product->price*$compra->cantidad}}.00
+                                        </td>
 
-                                        </td>
-                                        {{$costototal+=$product->price*$compra->cantidad}}
                                         <td>
-                                            {{$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
+                                            ${{$compra->ganancia}}
                                         </td>
-                                        {{$gananciavendedor+=$product->price*$compra->cantidad*(100-$product->porcentaje)/100}}
                                         <td>
-                                            {{$product->price*$compra->cantidad*($product->porcentaje)/100}}
+                                            ${{$compra->mercado}}
                                         </td>
-                                        
-                                        {{$gananciamercado+=$product->price*$compra->cantidad*($product->porcentaje)/100}}
                                     @endif
 
                                 @endforeach
@@ -126,15 +123,19 @@
                                 <td>{{$costototal}}</td>
                                 <td>{{$gananciavendedor}}</td>
                                 <td>{{$gananciamercado}}</td>
-                                
+
                             </tr>
                         </tbody>
                     </table>
                 </div>
-                <form class="d-flex justify-content-end" action="">
-                    <input class="btn btn-primary" type="submit" value="Pagar">
-                </form>
+
+                @csrf
+                <a class="btn btn-primary"  href="{{ url('/pagos',$id) }}">Pagar</a>
+
             </div>
+            @else
+            <p for="name_id" class="control-label">No hay compras por pagar al vendedor</p>
+            @endif
         @endif
     @endauth
 </div>

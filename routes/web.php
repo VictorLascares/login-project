@@ -18,9 +18,10 @@ use App\Models\User;
 */
 
 
-Route::get('/', function(){
-    return view('iniciar');
-});
+//Route::get('/', function(){
+//    return view('iniciar');
+//});
+Route::get('/',['App\Http\Controllers\SessionController','iniciar']);
 Route::post('comprar/{linea}/{product_id}',['App\Http\Controllers\CompraController','comprar']);
 Route::post('comprar/{banco}/{product_id}',['App\Http\Controllers\CompraController','comprar']);
 
@@ -51,6 +52,8 @@ Route::post('/product/{null}',['App\Http\Controllers\ProductController','indexCa
 Route::get('/estado/{id}/{estado}',['App\Http\Controllers\UserController','updateEstado']);
 Route::get('/estado/{id}',['App\Http\Controllers\CompraController','updateEstado']);
 Route::post('/calificado/{id}',['App\Http\Controllers\CompraController','updateCalificado']);
+Route::get('/pago/{id}',['App\Http\Controllers\CompraController','updatePago']);
+Route::get('/pagos/{id}',['App\Http\Controllers\CompraController','updatePagos']);
 
 Route::resource('questions', QuestionController::class);
 

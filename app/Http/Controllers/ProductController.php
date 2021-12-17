@@ -26,6 +26,7 @@ class ProductController extends Controller
     public function index()
     {
         $compras = [];
+        $gananciavendedor = 0;
         if(Auth::user() != null){
             $compras = Compra::searchu(Auth::user()->id)->get();
             switch (Auth::user()->rol) {
@@ -36,6 +37,10 @@ class ProductController extends Controller
                         $products = Product::aceptados()->get();//Concesionados;
                     }else{
                         $compras = Compra::all();
+                        $comprapagada = Compra::where('pago',true)->where('vendedor',Auth::user()->id)->get();
+                        foreach ($comprapagada as $compra) {
+                            $gananciavendedor += $compra->ganancia;
+                        }
                         $products = Product::propios(Auth::user()->id)->get();//Propiod;
                     }
                     break;
@@ -64,12 +69,13 @@ class ProductController extends Controller
         $i = 1;
 
         $categories = Category::all();
-        return view('product.index', compact('products', 'i', 'categories','user','compras'));
+        return view('product.index', compact('products', 'i', 'categories','user','compras','gananciavendedor'));
     }
 
     public function indexCategory(Request $request,$id_category)
     {
         $compras = [];
+        $gananciavendedor = 0;
         if(Auth::user() != null){
             $compras = Compra::searchu(Auth::user()->id)->get();
             if($request->input('name') != ''){
@@ -84,6 +90,10 @@ class ProductController extends Controller
                         }//Concesionados;
                     }else{
                         $compras = Compra::all();
+                        $comprapagada = Compra::where('pago',true)->where('vendedor',Auth::user()->id)->get();
+                        foreach ($comprapagada as $compra) {
+                            $gananciavendedor += $compra->ganancia;
+                        }
                         $products = Product::propios(Auth::user()->id)->name($request->input('name'))->get();//Propiod;
                     }
                 }
@@ -100,6 +110,10 @@ class ProductController extends Controller
                                 $products = Product::aceptados()->get();
                             }
                         }else{
+                            $comprapagada = Compra::where('pago',true)->where('vendedor',Auth::user()->id)->get();
+                            foreach ($comprapagada as $compra) {
+                                $gananciavendedor += $compra->ganancia;
+                            }
                             $compras = Compra::all();
                             $products = Product::propios(Auth::user()->id)->get();//Propiod;
                         }
@@ -118,6 +132,10 @@ class ProductController extends Controller
                                 $products = Product::aceptados()->category($id_category)->get();//Concesionados;
                             }else{
                                 $compras = Compra::all();
+                                $comprapagada = Compra::where('pago',true)->where('vendedor',Auth::user()->id)->get();
+                                foreach ($comprapagada as $compra) {
+                                    $gananciavendedor += $compra->ganancia;
+                                }
                                 $products = Product::propios(Auth::user()->id)->category($id_category)->get();//Propiod;
                             }
                             break;
@@ -164,7 +182,7 @@ class ProductController extends Controller
         $i = 1;
 
         $categories = Category::all();
-        return view('product.index', compact('products', 'i', 'categories','user','compras'));
+        return view('product.index', compact('products', 'i', 'categories','user','compras','gananciavendedor'));
     }
 
     /**
