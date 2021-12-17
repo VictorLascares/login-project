@@ -1,12 +1,13 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="vh-100">
-    <div class="d-flex justify-content-center align-items-center h-100">
+    <div class="d-flex justify-content-center align-items-center mt-4">
         <div class="col-md-6">
-            <div class="card shadow p-3 bg-body rounded">
-                <div class="card-body">
+            <div class="card shadow bg-body rounded">
+                <div class="card-header">
                     <h1 class="card-title text-center">Edit Product</h1>
+                </div>
+                <div class="card-body">
                     <form method="POST" action="{{ route('products.update',$product->id)}}" enctype="multipart/form-data">
                         @method('PUT')
                         @csrf
@@ -49,5 +50,4 @@
             </div>
         </div>
     </div>
-</section>
 @endsection

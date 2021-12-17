@@ -4,31 +4,34 @@
 <div class="input-group form-group">
     @auth
         <form id="formulario_busqueda" action="/product/{null}" >
-            <i class="fas fa-think fa-users"></i>
-            <select  class="select-category" name="categoria" class="form-control">
-                <option selected>All Categories</option>
-                @foreach ($categories as $category)
-                    <option class="categoria" id="{{$category->id}}" value="{{$category->name}}">{{$category->name}}</option>
-                @endforeach
-            </select>
-            <input type="text" placeholder="Product name" id="nombre" name="name">
-            <button type="submit" class="bi bi-search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                </svg>
-            </button>
+            <div class="input-group mt-4">
+                <select  class="select-category" name="categoria" class="form-select">
+                    <option selected>Todas las Categorias</option>
+                    @foreach ($categories as $category)
+                        <option class="categoria" id="{{$category->id}}" value="{{$category->name}}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+                <input type="text" placeholder="Nombre de Producto" id="nombre" name="name">
+                <button type="submit" class="bi bi-search btn btn-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+                    </svg>
+                </button>
+            </div>
         </form>
     @endauth
     @guest
-    <form method="POST" action="/product/{null}">
+    <form class="mt-4" method="POST" action="/product/{null}">
         @csrf
-            <input type="text" placeholder="Product name" id="name" name="name">
-            <button type="submit" class="bi bi-search" >
+        <div class="input-group">
+            <input type="text" placeholder="Nombre de Producto" id="name" name="name" class="form-control">
+            <button type="submit" class="bi bi-search btn btn-primary" >
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                     <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
                 </svg>
             </button>
-        </form>
+        </div>
+    </form>
     @endguest
 </div>
 
@@ -38,7 +41,7 @@
             <div class="card-header">
                 <div class="d-lg-flex justify-content-between align-items-center">
                     <h2 class="card-title text-center">
-                        Products
+                        Productos
                     </h2>
                     @if ($user == 'Cliente')
                         @if (Auth::user()->estado == 'Vendedor')
@@ -186,41 +189,72 @@
                     @endforeach
                 </div>
             </div>
-            @auth
+        </div>
+        @auth
+            <div class="card mt-4">
                 @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Comprador')
-
-                    <div class="card text-white bg-primary mb-3" style="max-width: 40rem; float:rigth; margin: 10px;" >
-                        <div class="card-header"><h3>Productos comprados - Cantidad - Estado</h1></div>
-                            <div class="card-body">
+                    <div class="card-header">
+                        <h2 class="card-title">Historial de Compras</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Productos comprados</th>
+                                <th scope="col">Cantidad</th>
+                                <th scope="col">Estado de Compra</th>
+                            </tr>
+                            </thead>
+                            <tbody>
                                 @foreach ($compras as $compra)
-                                    @foreach ($products as $product)
-                                        @if ($product->id == $compra->product_id)
-                                            <h5 class="card-title text-dark" ><a class="text-dark" href="{{route('products.show',$product->id)}}">{{$product->name}}</a> - {{$compra->cantidad}} - {{$compra->estado}}</h5>
-                                        @endif
-                                    @endforeach
+                                    <tr>
+                                        @foreach ($products as $product)
+                                            @if ($product->id == $compra->product_id)
+                                                <td>{{$product->name}}</td>
+                                                <td>{{$compra->cantidad}}</td>
+                                                <td>{{$compra->estado}}</td>
+                                            @endif
+                                        @endforeach
+                                    </tr>
                                 @endforeach
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 @endif
                 @if (Auth::user()->rol == 'Cliente' && Auth::user()->estado == 'Vendedor')
-                    <div class="card text-white bg-primary mb-3" style="max-width: 70rem; float:rigth; margin: 10px;" >
-                        <div class="card-header"><h3>Productos vendidos - Cantidad - Estado - Comprador</h1></div>
-                            <div class="card-body">
+                    <div class="card-header">
+                        <h2 class="card-title">Historial de Ventas</h2>
+                    </div>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Productos Vendidos</th>
+                                    <th scope="col">Cantidad</th>
+                                    <th scope="col">Estado de Venta</th>
+                                    <th scope="col">Comprador</th>
+                                </tr>
+                            </thead>
+                            <tbody>
                                 @foreach ($products as $product)
                                     @foreach ($compras as $compra)
-                                        @if ($product->id == $compra->product_id)
-                                            <h5 class="card-title text-dark" ><a class="text-dark" href="{{route('products.show',$product->id)}}">{{$product->name}}</a> - {{$compra->cantidad}} - {{$compra->estado}} - {{Auth::user()->nombre($compra->user_id)}}
-                                            <a href="{{url('/estado',$compra->id)}}" class="text-dark">Entregar</a></h5>
-                                        @endif
+                                        <tr>
+                                            @if ($product->id == $compra->product_id)
+                                                <td>{{$product->name}}</td>
+                                                <td>{{$compra->cantidad}}</td>
+                                                <td>{{$compra->estado}}</td>
+                                                <td>{{Auth::user()->nombre($compra->user_id)}}</td>
+                                                <td><a href="{{url('/estado',$compra->id)}}" class="text-dark">Entregar</a></td>
+                                            @endif
+                                        </tr>
                                     @endforeach
                                 @endforeach
-                            </div>
-                        </div>
+                            </tbody>
+                        </table>
                     </div>
                 @endif
-            @endauth
-        </div>
+            </div>
+        @endauth
     </div>
 </div>
 <script type="text/javascript" >

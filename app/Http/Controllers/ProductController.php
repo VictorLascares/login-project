@@ -89,7 +89,7 @@ class ProductController extends Controller
                 }
                 $user = Auth::user()->rol;
             } else {
-                if ($request->input('categoria') == 'All Categories') {
+                if ($request->input('categoria') == 'Todas las Categorias') {
                     if(Auth::user()->rol == 'Encargado') {
                         $products = Product::propuestos()->get();
                     } else {

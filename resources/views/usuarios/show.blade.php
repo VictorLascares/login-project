@@ -30,7 +30,7 @@
         <div class="">
             @if (Auth::user()->rol == 'Supervisor')
                 <div class="table-responsive">
-                    <table class="table table-primary">
+                    <table class="table">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">#</th>
@@ -56,7 +56,7 @@
             @endif
         @if (Auth::user()->rol == 'Contador')
                 <div class="table-responsive">
-                    <table class="table table-primary">
+                    <table class="table">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">#</th>

@@ -1,27 +1,29 @@
 @extends('layouts.app')
 
 @section('content')
-<section class="vh-100">
-    <div class="d-flex justify-content-center align-items-center h-100">
+<section class="mt-4">
+    <div class="d-flex justify-content-center align-items-center">
         <div class="col-md-6">
             <div class="card shadow p-3 bg-body rounded">
+                <div class="card-header">
+                    <h1 class="card-title text-center">Crear Nueva Categoria</h1>
+                </div>
                 <div class="card-body">
-                    <h1 class="card-title text-center">Create New Category</h1>
                     <form method="POST" action="{{ route('categories.store')}}">
                         @csrf
                         <div class="form-floating mb-3">
                             <input required type="text" class="form-control" id="floatingInput" placeholder="Category Name" name="name">
-                            <label for="floatingInput">Category Name</label>
+                            <label for="floatingInput">Nombre de Categoria</label>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" checked id="activeCheckbox" name="active">
                             <label class="form-check-label" for="activeCheckbox">
-                                Active
+                                Activa
                             </label>
                         </div>
                         
                         <div class="d-grid gap-2 col-6 mx-auto">
-                            <button type="submit" class="btn btn-lg btn-primary">Create</button>
+                            <button type="submit" class="btn btn-lg btn-primary">Crear</button>
                         </div>
                     </form>
                 </div>

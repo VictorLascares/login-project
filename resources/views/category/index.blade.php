@@ -6,26 +6,26 @@
             <div class="card-header">
                 <div class="d-lg-flex justify-content-between align-items-center">
                     <h2 class="card-title text-center">
-                        Manage Categories
+                        Categorias
                     </h2>
                     @if ($user == 'Supervisor')
                         <form>
                             @csrf
-                            <a href="{{ route('categories.create')}}" class="btn btn-primary">New Category<a/>
+                            <a href="{{ route('categories.create')}}" class="btn btn-primary">Nueva Categoria<a/>
                         </form>
                     @endif
                 </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-primary">
+                    <table class="table">
                         <thead>
                             <tr class="text-center">
                                 <th scope="col">#</th>
-                                <th scope="col">Name</th>
-                                <th scope="col">Active</th>
-                                <th scope="col">Products</th>
-                                <th scope="col">Actions</th>
+                                <th scope="col">Nombre</th>
+                                <th scope="col">Estado</th>
+                                <th scope="col">Productos</th>
+                                <th scope="col">Acciones</th>
                             </tr>
                         </thead>
                         <tbody class="text-center">
@@ -34,13 +34,13 @@
                                 <th scope="row">{{ $i++ }}</th>
                                 <td>{{ $category->name }}</td>
                                 @if ($category->active)
-                                    <td class="text-success">Yes</td>
+                                    <td class="text-success">Activa</td>
                                 @else
-                                    <td class="text-danger">No</td>
+                                    <td class="text-danger">Inactiva</td>
                                 @endif
                                 <td>
                                     @csrf
-                                    <a href="/product/{{$category->id}}">Show products</a>
+                                    <a href="/product/{{$category->id}}">Mostrar Productos</a>
                                 </td>
                                 <td class="d-flex justify-content-center">
                                     <form method="POST" action="{{route('categories.destroy',$category->id)}}">

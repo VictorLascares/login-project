@@ -37,7 +37,7 @@
                             <label for="floatingSelect">Product Category</label>
                         </div>
                         <div class="d-grid gap-2 col-6 mx-auto">
-                            <button type="submit" class="btn btn-lg btn-primary">Create</button>
+                            <button type="submit" class="btn btn-lg btn-primary">Crear</button>
                         </div>
                     </form>
                 </div>

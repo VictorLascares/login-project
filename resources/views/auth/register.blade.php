@@ -1,8 +1,5 @@
 @extends('layouts.app')
 @section('content')
-<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-<script type="text/javascript" src="{{asset('js/busqueda.js')}}">
-</script> 
 <div class="mt-4 row d-flex justify-content-center align-items-center h-100" name="content">
 	<div class="col-lg-12 col-xl-11">
 		<div class="card">
@@ -102,12 +99,15 @@
 							</div>
 						</form>
 					</div>
-						<div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-							<img src="https://mdbootstrap.com/img/Photos/new-templates/bootstrap-registration/draw1.png" class="img-fluid" alt="Sample image">
-						</div>
+					<div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
+						<img class="img-fluid" src="{{asset('fotos/register.webp')}}" alt="Imagen de registro">
+					</div>
 				</div>
 			</div>
 		</div>
 	</div>
 </div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script type="text/javascript" src="{{asset('js/busqueda.js')}}">
+</script> 
 @endsection
